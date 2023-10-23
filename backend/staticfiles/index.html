@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <!-- Include Bootstrap CSS (you may need to adjust the path) -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Add custom CSS for the dark theme -->
+    <style>
+        body {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+        .login-container {
+            margin-top: 10%;
+        }
+        .login-panel {
+            background-color: #292b2c;
+            padding: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container login-container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="login-panel">
+                    <h2 class="text-center">Login</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Include Bootstrap and jQuery JavaScript (you may need to adjust the paths) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#loginForm").submit(function (e) {
+                e.preventDefault();
+                const endpoint = "http://localhost:3000/auth/login";
+                const username = $("#username").val();
+                const password = $("#password").val();
+    
+                const requestData = {
+                    username: username,
+                    password: password
+                };
+    
+                $.ajax({
+                    type: "POST",
+                    url: endpoint,
+                    data: JSON.stringify(requestData),
+                    contentType: "application/json",
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('withCredentials', 'true');
+                    },
+                    success: function (response) {
+                        console.log("Login successful:", response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Login failed:", error);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    
+</body>
+</html>

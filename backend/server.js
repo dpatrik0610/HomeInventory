@@ -1,7 +1,6 @@
 // Libs
 const express = require('express');
 const dotenv = require('dotenv');
-const cookieSession = require('cookie-session');
 
 // Middlewares
 const customLogger = require('./middleware/morgan');
@@ -15,8 +14,6 @@ dotenv.config();
 
 // Import the Database class and connectWithRetry function
 // const database = require('./config/db');
-
-// Authentication: TODO Use Authentication server with shared cookies.
 
 app.use(express.static("staticfiles"));
 app.use(customLogger);
