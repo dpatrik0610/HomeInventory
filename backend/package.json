@@ -4,7 +4,8 @@
   "description": "Home Inventory App's API",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "homeinventory": "nodemon server.js"
   },
   "author": "Dobos Patrik Márk",
   "license": "ISC"
