@@ -4,7 +4,7 @@ const dotenv = require('dotenv');
 const cookieSession = require('cookie-session');
 
 // Middlewares
-// const customLogger = require('./middleware/morgan');
+const customLogger = require('./middleware/morgan');
 
 // Other
 const router = require('./routes/router');
@@ -19,6 +19,7 @@ dotenv.config();
 // Authentication: TODO Use Authentication server with shared cookies.
 
 app.use(express.static("staticfiles"));
+app.use(customLogger);
 
 // Routes
 app.use(express.json());
