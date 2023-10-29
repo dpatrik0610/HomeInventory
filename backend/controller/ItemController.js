@@ -1,0 +1,80 @@
+const Item = require('../services/Item');
+const ItemService = require('../services/ItemService');
+
+class ItemController {
+  constructor(db) {
+    this.itemService = new ItemService(db);
+  }
+
+  async createItem(req, res) {
+    try {
+      const { containerId, name, qtty, expiration_date } = req.body;
+      const newItem = new Item(containerId, name, qtty, expiration_date);
+      const createdItem = await this.itemService.createItem(newItem);
+      res.status(201).json(createdItem);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to create item' });
+    }
+  }
+
+  async getItemsByContainerId(req, res) {
+    const { containerId } = req.params;
+    try {
+      const items = await this.itemService.getItemsByContainerId(containerId);
+      res.status(200).json(items);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to get items' });
+    }
+  }
+
+  async getItemById(req, res) {
+    const { id } = req.params;
+    try {
+      const item = await this.itemService.getItemById(id);
+      if (!item) {
+        res.status(404).json({ error: 'Item not found' });
+      } else {
+        res.status(200).json(item);
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to get item' });
+    }
+  }
+
+  async updateItem(req, res) {
+    const { id } = req.params;
+    const { name, qtty, expiration_date } = req.body;
+    const updatedItemData = { name, qtty, expiration_date };
+    try {
+      const isUpdated = await this.itemService.updateItem(id, updatedItemData);
+      if (isUpdated) {
+        res.status(200).json({ message: 'Item updated successfully' });
+      } else {
+        res.status(404).json({ error: 'Item not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to update item' });
+    }
+  }
+
+  async deleteItem(req, res) {
+    const { id } = req.params;
+    try {
+      const isDeleted = await this.itemService.deleteItem(id);
+      if (isDeleted) {
+        res.status(200).json({ message: 'Item deleted successfully' });
+      } else {
+        res.status(404).json({ error: 'Item not found' });
+      }
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to delete item' });
+    }
+  }
+}
+
+module.exports = ItemController;
