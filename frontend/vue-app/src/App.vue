@@ -1,13 +1,16 @@
-<script setup>
-
-</script>
-
 <template>
-    <h1 class="text-3xl font-bold underline">
-    Hello world!
-  </h1>
+  <div id="app">
+    <home-inventory-app></home-inventory-app>
+  </div>
 </template>
 
-<style scoped>
+<script>
+import HomeInventoryApp from "./HomeInvenoryApp.vue";
 
-</style>
+export default {
+  name: "App",
+  components: {
+    HomeInventoryApp,
+  },
+};
+</script>
