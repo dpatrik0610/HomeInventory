@@ -9,6 +9,9 @@ class ItemController {
   async createItem(req, res) {
     try {
       const { containerId, name, qtty, expiration_date } = req.body;
+      if(!containerId) return res.status(400).json({message: "Container ID required."});
+      if(!name) return res.status(400).json({message: "Name required."});
+      
       const newItem = new Item(containerId, name, qtty, expiration_date);
       const createdItem = await this.itemService.createItem(newItem);
       res.status(201).json(createdItem);

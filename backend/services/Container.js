@@ -1,5 +1,5 @@
 class Container {
-  constructor(name, description) {
+  constructor(name, description = null) {
     this.name = name;
     this.description = description;
   }

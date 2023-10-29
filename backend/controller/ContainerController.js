@@ -9,6 +9,8 @@ class ContainerController {
   async createContainer(req, res) {
     try {
       const { name, description } = req.body;
+      if(!name) return res.status(400).json({message: "Name required."});
+
       const newContainer = new Container(name, description);
       const createdContainer = await this.containerService.createContainer(newContainer);
       res.status(201).json(createdContainer);
