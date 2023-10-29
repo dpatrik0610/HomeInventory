@@ -58,7 +58,7 @@ class ItemController {
     const updatedQtty = qtty !== undefined ? qtty : 1;
   
     // Set expiration_date to today's date if it's missing
-    const updatedExpirationDate = expiration_date || new Date();
+    const updatedExpirationDate = expiration_date || null;
   
     const updatedItemData = {
       name,
