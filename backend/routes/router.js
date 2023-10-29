@@ -3,6 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const authProxy = require('../middleware/authProxy');
 const ContainerRoutes = require('./containerRoutes');
+const ItemRoutes = require('./itemRoutes');
 
 router.use('/auth', authProxy);
 router.use('/auth/welcome', authProxy);
@@ -28,7 +29,9 @@ router.post('/login', (req, res) => {
 
 // handle logout
 // handle register
-const database = require('../config/db');
-router.use('/api/containers', ContainerRoutes(database.getDb()));
+
+const database = require('../config/db').getDb();
+router.use('/api/containers', ContainerRoutes(database));
+router.use('/api/items', ItemRoutes(database));
 
 module.exports = router;
