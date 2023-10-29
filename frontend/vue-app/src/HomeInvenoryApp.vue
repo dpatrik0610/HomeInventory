@@ -1,16 +1,16 @@
 <template>
-  <div class="flex bg-gray-100 h-screen">
+  <div class="flex bg-primary h-screen">
     <!-- Sidebar -->
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-64 p-4 shadow-xl shadow-blue-gray-900/5">
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-secondary text-text w-64 p-4 shadow-xl shadow-blue-gray-900/5">
       <div class="mb-2 p-4">
-        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Home Inventory</h5>
+        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-text">Home Inventory</h5>
       </div>
-      <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+      <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-text">
         <div v-for="(container, index) in containers" :key="index">
           <div
             role="button"
             tabindex="0"
-            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-textfocus-text-blue-900 active:text-text outline-none"
             @click="selectContainer(index)"
           >
             {{ container.name }}
@@ -19,10 +19,10 @@
         <div
           role="button"
           tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-button_2 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-white focus-text-blue-900 active:text-white outline-none"
           @click="addContainer"
         >
-          Add Container
+          + Add Container
         </div>
       </nav>
     </div>
@@ -33,7 +33,7 @@
         <ul>
           <li v-for="(item, index) in selectedContainer.items" :key="index">
             <div
-              class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+              class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-button_2 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-white focus-text-blue-900 active:text-text outline-none"
             >
               {{ item.name }}
             </div>
@@ -42,7 +42,7 @@
         <div
           role="button"
           tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-button_2 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-white focus-text-blue-900 active:text-text outline-none"
           @click="addItem"
         >
           + Add Item
