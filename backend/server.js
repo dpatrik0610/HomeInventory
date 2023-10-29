@@ -1,6 +1,7 @@
 // Libs
 const express = require('express');
 const dotenv = require('dotenv');
+const cors = require('cors');
 
 // Middlewares
 const customLogger = require('./middleware/morgan');
@@ -26,6 +27,19 @@ function setupApp(){
   app.use(express.static("staticfiles"));
   app.use(customLogger);
   
+  const allowedOrigins = ['85.67.13.248'];
+  app.use(cors({
+      origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      },
+      credentials: true,
+      })
+  );
+
   // Routes
   app.use(express.json());
   app.use('/', router);

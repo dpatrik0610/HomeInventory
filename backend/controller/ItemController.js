@@ -48,7 +48,24 @@ class ItemController {
   async updateItem(req, res) {
     const { id } = req.params;
     const { name, qtty, expiration_date } = req.body;
-    const updatedItemData = { name, qtty, expiration_date };
+  
+    // Check if name is missing
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
+    }
+  
+    // Set default quantity to 1 if it's missing
+    const updatedQtty = qtty !== undefined ? qtty : 1;
+  
+    // Set expiration_date to today's date if it's missing
+    const updatedExpirationDate = expiration_date || new Date();
+  
+    const updatedItemData = {
+      name,
+      qtty: updatedQtty,
+      expiration_date: updatedExpirationDate,
+    };
+  
     try {
       const isUpdated = await this.itemService.updateItem(id, updatedItemData);
       if (isUpdated) {
