@@ -6,10 +6,9 @@ class ItemService {
   }
 
   // Create a new item
-  async createItem(containerId, name, qtty, expiration_date) {
-    const item = new Item(containerId, name, qtty, expiration_date);
+  async createItem(item) {
     const result = await this.items.insertOne(item);
-    return result.ops[0]; // Return the newly created item
+    return result.insertedId;
   }
 
   // Get all items in a container
