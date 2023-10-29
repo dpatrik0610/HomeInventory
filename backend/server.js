@@ -7,14 +7,24 @@ const customLogger = require('./middleware/morgan');
 
 // Other
 const router = require('./routes/router');
-// const { connectWithRetry } = require('./config/connectToDBWithRetry');
 
 const app = express();
 dotenv.config();
 
 // Import the Database class and connectWithRetry function
-// const database = require('./config/db');
+const database = require('./config/db');
+const { connectWithRetry } = require('./config/connectToDBWithRetry');
 
+// Connect to MongoDB with retry
+connectWithRetry(database, 5, 10000)
+    .then(() => {
+        setupApp();
+    })
+    .catch(err => console.error(err));
+
+function setupApp(){
+  
+}
 app.use(express.static("staticfiles"));
 app.use(customLogger);
 
