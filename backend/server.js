@@ -23,17 +23,17 @@ connectWithRetry(database, 5, 10000)
     .catch(err => console.error(err));
 
 function setupApp(){
+  app.use(express.static("staticfiles"));
+  app.use(customLogger);
+  
+  // Routes
+  app.use(express.json());
+  app.use('/', router);
+  
+  // Start the server
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
   
 }
-app.use(express.static("staticfiles"));
-app.use(customLogger);
-
-// Routes
-app.use(express.json());
-app.use('/', router);
-
-// Start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
