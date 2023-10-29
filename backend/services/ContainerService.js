@@ -7,12 +7,11 @@ class ContainerService {
 
   async createContainer(container) {
     const result = this.containers.insertOne(container);
-    return result.insertedId;
+    return await result.insertedId;
   }
 
   async getContainers() {
-    console.log(await this.containers);
-    return this.containers.find().toArray();
+    return await this.containers.find().toArray();
   }
 
   async getContainerById(id) {

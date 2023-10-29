@@ -19,13 +19,14 @@ class ItemController {
   }
 
   async getItemsByContainerId(req, res) {
-    const { containerId } = req.params;
+    const containerId = req.params.id;
+    if(!containerId) return res.status(400).json({message: "Please provide a Container ID."})
     try {
       const items = await this.itemService.getItemsByContainerId(containerId);
-      res.status(200).json(items);
+      return res.status(200).json(items);
     } catch (error) {
       console.log(error);
-      res.status(500).json({ error: 'Failed to get items' });
+      return res.status(500).json({ error: 'Failed to get items' });
     }
   }
 
