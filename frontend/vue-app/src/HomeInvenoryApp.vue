@@ -1,38 +1,60 @@
 <template>
   <div class="flex bg-gray-100 h-screen">
-    <div class="w-1/4 p-4 bg-gray-200">
-      <div>
-        <ul>
-          <li v-for="(container, index) in containers" :key="index">
-            <button @click="selectContainer(index)" class="p-2 text-blue-500 hover:text-blue-700">
-              {{ container.name }}
-            </button>
-          </li>
-        </ul>
-        <div>
-          <button @click="addContainer" class="bg-blue-500 text-white p-2 rounded">
-            + Add Container
-          </button>
-        </div>
+    <!-- Sidebar -->
+    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-64 p-4 shadow-xl shadow-blue-gray-900/5">
+      <div class="mb-2 p-4">
+        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Home Inventory</h5>
       </div>
+      <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+        <div v-for="(container, index) in containers" :key="index">
+          <div
+            role="button"
+            tabindex="0"
+            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+            @click="selectContainer(index)"
+          >
+            {{ container.name }}
+          </div>
+        </div>
+        <div
+          role="button"
+          tabindex="0"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+          @click="addContainer"
+        >
+          Add Container
+        </div>
+      </nav>
     </div>
+    <!-- Items -->
     <div class="w-3/4 p-4">
       <div v-if="selectedContainer">
         <h2 class="text-2xl font-bold">{{ selectedContainer.name }}</h2>
         <ul>
           <li v-for="(item, index) in selectedContainer.items" :key="index">
-            <div class="bg-white rounded p-2 shadow-md mb-2">{{ item.name }}</div>
+            <div
+              class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+            >
+              {{ item.name }}
+            </div>
           </li>
         </ul>
-        <div>
-          <button @click="addItem" class="bg-green-500 text-white p-2 rounded">
-            + Add Item
-          </button>
+        <div
+          role="button"
+          tabindex="0"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+          @click="addItem"
+        >
+          + Add Item
         </div>
       </div>
     </div>
   </div>
 </template>
+
+
+
+
 
 
 <script>
