@@ -6,16 +6,17 @@ class ContainerService {
   }
 
   async createContainer(container) {
-    const result = await this.containers.insertOne(container);
-    return result.ops[0];
+    const result = this.containers.insertOne(container);
+    return result.insertedId;
   }
 
   async getContainers() {
+    console.log(await this.containers);
     return this.containers.find().toArray();
   }
 
   async getContainerById(id) {
-    return this.containers.findOne({ _id: new ObjectId(id) });
+    return await this.containers.findOne({ _id: new ObjectId(id) });
   }
 
   async updateContainer(id, updatedContainer) {
