@@ -33,5 +33,7 @@ router.post('/login', (req, res) => {
 const database = require('../config/db').getDb();
 router.use('/api/containers', ContainerRoutes(database));
 router.use('/api/items', ItemRoutes(database));
-
+router.use('/api/docs', (req, res) => {
+  res.redirect('/documentation.html')
+});
 module.exports = router;
