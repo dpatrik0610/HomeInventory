@@ -6,8 +6,8 @@ class ContainerService {
   }
 
   async createContainer(container) {
-    const result = this.containers.insertOne(container);
-    return await result.insertedId;
+    const result = await this.containers.insertOne(container);
+    return result.insertedId;
   }
 
   async getContainers() {

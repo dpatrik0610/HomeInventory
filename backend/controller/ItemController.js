@@ -1,4 +1,4 @@
-const Item = require('../services/Item');
+const Item = require('../services/models/Item');
 const ItemService = require('../services/ItemService');
 
 class ItemController {

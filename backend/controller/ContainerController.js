@@ -1,4 +1,4 @@
-const Container = require('../services/Container');
+const Container = require('../services/models/Container');
 const ContainerService = require('../services/ContainerService');
 
 class ContainerController {
@@ -12,7 +12,9 @@ class ContainerController {
       if(!name) return res.status(400).json({message: "Name required."});
 
       const newContainer = new Container(name, description);
-      const createdContainer = await this.containerService.createContainer(newContainer);
+      const createdContainerId = await this.containerService.createContainer(newContainer);
+      console.log(createdContainerId)
+      const createdContainer = await this.containerService.getContainerById(createdContainerId);
       res.status(201).json(createdContainer);
     } catch (error) {
       console.log(error);
