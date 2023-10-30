@@ -7,10 +7,14 @@
 <script>
 import HomeInventoryApp from "./HomeInvenoryApp.vue";
 
+
 export default {
   name: "App",
+  
   components: {
+    
     HomeInventoryApp,
   },
+
 };
 </script>

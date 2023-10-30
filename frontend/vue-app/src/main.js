@@ -1,9 +1,10 @@
 import './assets/main.css'
-
-import { createApp } from 'vue';
+import { createApp, onMounted } from 'vue';
 import { createPinia } from 'pinia';
 import { useInventoryStore } from './stores/index.js';
 import App from './App.vue';
+
+
 
 const app = createApp(App);
 
@@ -12,4 +13,7 @@ app.use(pinia);
 
 app.mount('#app');
 
+const inventoryStore = useInventoryStore();
+
+inventoryStore.fetchContainers();
 

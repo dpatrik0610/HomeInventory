@@ -31,7 +31,7 @@
       <div v-if="$store.selectedContainer">
         <h2 class="text-2xl font-bold">{{ $store.selectedContainer.name }}</h2>
         <ul>
-            <li v-for="(item, index) in $store.selectedContainer.items" :key="index">
+            <li v-for="(item, index) in $store.displayeditems" :key="index">
               <div class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none">
                 <span>{{ item.name }}</span>
                 <div class="flex">
@@ -63,12 +63,15 @@ import { ref } from 'vue';
 import { useInventoryStore } from './stores/index';
 
 export default {
+
+  
   setup() {
+    
     const $store = useInventoryStore();
     const newNameInput = ref('');
 
     const editItemName = (index) => {
-      const newName = prompt('Enter the new name for the item', $store.selectedContainer.items[index].name);
+      const newName = prompt('Enter the new name for the item', $store.displayeditems[index].name);
       if (newName) {
         $store.updateItemName(index, newName);
       }
