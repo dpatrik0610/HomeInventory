@@ -9,11 +9,13 @@ class ItemController {
   async createItem(req, res) {
     try {
       const { containerId, name, qtty, expiration_date } = req.body;
-      if(!containerId) return res.status(400).json({message: "Container ID required."});
+      if(!containerId || containerId === undefined) return res.status(400).json({message: "Container ID required."});
       if(!name) return res.status(400).json({message: "Name required."});
 
       const newItem = new Item(containerId, name, qtty, expiration_date);
-      const createdItem = await this.itemService.createItem(newItem);
+      const createdItemId = await this.itemService.createItem(newItem);
+      const createdItem = await this.itemService.getItemById(createdItemId);
+      
       res.status(201).json(createdItem);
     } catch (error) {
       console.log(error);
@@ -23,7 +25,7 @@ class ItemController {
 
   async getItemsByContainerId(req, res) {
     const containerId = req.params.id;
-    if(!containerId) return res.status(400).json({message: "Please provide a Container ID."})
+    if(!containerId || containerId === undefined) return res.status(400).json({message: "Please provide a Container ID."})
     try {
       const items = await this.itemService.getItemsByContainerId(containerId);
       return res.status(200).json(items);
@@ -35,6 +37,7 @@ class ItemController {
 
   async getItemById(req, res) {
     const { id } = req.params;
+    if(!id || id === undefined) return res.status(400).json({message: "Please provide an Item ID."})
     try {
       const item = await this.itemService.getItemById(id);
       if (!item) {
@@ -50,12 +53,13 @@ class ItemController {
 
   async updateItem(req, res) {
     const { id } = req.params;
+    if (!id || id === undefined) return res.status(404).json({message: "ID required."});
     const { name, qtty, expiration_date } = req.body;
     
     const updatedItemData = {
       name,
-      qtty: updatedQtty,
-      expiration_date: updatedExpirationDate,
+      qtty,
+      expiration_date,
     };
   
     try {
@@ -73,6 +77,8 @@ class ItemController {
 
   async deleteItem(req, res) {
     const { id } = req.params;
+    if(!id || id === undefined) return res.status(404).json({message: "Id required."});
+
     try {
       const isDeleted = await this.itemService.deleteItem(id);
       if (isDeleted) {
