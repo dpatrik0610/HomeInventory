@@ -94,7 +94,7 @@ export const useInventoryStore = defineStore('inventory', {
       const itemId = this.displayeditems[index]._id;
       try {
         await fetch(
-            apiUrl + `items/item/${itemId}`,
+            apiUrl + `/items/item/${itemId}`,
           {
             method: 'DELETE',
           }
