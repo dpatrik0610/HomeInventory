@@ -93,6 +93,44 @@ class ContainerController {
     }
     res.status(200);
   }
+
+  async moveItemToContainer(req, res) {
+    const { itemId, toContainerId } = req.body;
+  
+    try {
+      const item = await this.itemService.getItemById(itemId);
+      if (!item) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+  
+      // Get the source container ID of the item
+      const fromContainerId = item.containerId.toString();
+  
+      // Check if the source and target containers exist
+      const fromContainer = await this.containerService.getContainerById(fromContainerId);
+      const toContainer = await this.containerService.getContainerById(toContainerId);
+  
+      if (!fromContainer || !toContainer) {
+        return res.status(404).json({ error: 'Source or target container not found' });
+      }
+  
+      // Update the container ID of the item to the target container
+      item.containerId = new ObjectId(toContainerId);
+  
+      // Update the item with the new containerId
+      const isUpdated = await this.itemService.updateItem(itemId, item);
+  
+      if (!isUpdated) {
+        return res.status(500).json({ error: 'Failed to move item to the target container' });
+      }
+  
+      res.status(200).json({ message: 'Item moved successfully' });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ error: 'Failed to move item' });
+    }
+  }
+  
 }
 
 module.exports = ContainerController;
