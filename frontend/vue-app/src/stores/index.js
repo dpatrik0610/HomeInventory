@@ -1,7 +1,7 @@
 // src/store/index.js
 import { defineStore } from 'pinia';
 
-const apiUrl = "";
+const apiUrl = '3000/api';
 
 export const useInventoryStore = defineStore('inventory', {
   state: () => ({
@@ -36,7 +36,33 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
+
+    async updateContainerName(index, newName) {
+      const containerId = this.containers[index]._id;
+      try {
+        await fetch(apiUrl + `/containers/${containerId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ 
+            "name": newName,
+            "description": "test"
+           }),
+        });
+        this.containers[index].name = newName;
+      } catch (error) {
+        console.error('Error updating container name:', error);
+      }
+    },
+
    async selectContainer(index) {
+
+    if (!this.containers[index]) {
+      this.selectedContainer = null;
+      this.displayeditems = [];
+      return;
+    }
       this.selectedContainer = this.containers[index];
       const id = this.selectedContainer._id;
       console.log(id);
@@ -72,7 +98,7 @@ export const useInventoryStore = defineStore('inventory', {
                 "containerId": this.selectedContainer._id,  
                 "name": name,  
                 "qtty": 1, 
-                "expiration_date": "2023-12-31" 
+                
               }),
           }
         );
@@ -105,7 +131,27 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
-    async updateItemName(index, newName) {
+
+
+    async deleteContainer(index) {
+      
+      const containerId = this.containers[index]._id;
+      try{
+        await fetch(
+            apiUrl + `/containers/${containerId}`,
+            {
+              method: 'DELETE',
+            }
+        );
+        this.containers.splice(index, 1);
+        this.selectContainer(null);
+      }
+      catch (error) {
+        console.error('Error deleting container:', error);
+      }
+    },
+
+    async updateItemName(index, newName, newqtty, newexpiration_date) {
         if (!this.selectedContainer) {
             console.error('No selected container to delete item from.');
             return;
@@ -124,12 +170,14 @@ export const useInventoryStore = defineStore('inventory', {
             },
             body: JSON.stringify({ 
                 "name": newName,  
-                "qtty": 1, 
-                "expiration_date": "2023-12-31" 
+                "qtty": newqtty, 
+                "expiration_date": newexpiration_date
               }),
           }
         );
         this.displayeditems[index].name = newName;
+        this.displayeditems[index].qtty = newqtty;
+        this.displayeditems[index].expiration_date = newexpiration_date;
       } catch (error) {
         console.error('Error updating item name:', error);
       }

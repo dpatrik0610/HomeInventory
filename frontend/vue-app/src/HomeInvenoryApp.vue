@@ -10,10 +10,18 @@
           <div
             role="button"
             tabindex="0"
-            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none justify-between"
             @click="selectContainer(index)"
           >
             {{ container.name }}
+            <div class="flex">
+                  <button class="text-blue-500 mr-2" @click="editContainer(index)">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                  </button>
+                  <button class="text-red-500" @click="deleteContainer(index)">
+                    <i class="fa-solid fa-trash-can"></i>
+                  </button>
+            </div>
           </div>
         </div>
         <div
@@ -26,6 +34,9 @@
         </div>
       </nav>
     </div>
+
+
+
     <!-- Items -->
     <div class="w-3/4 p-4">
       <div v-if="$store.selectedContainer">
@@ -33,13 +44,13 @@
         <ul>
             <li v-for="(item, index) in $store.displayeditems" :key="index">
               <div class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none">
-                <span>{{ item.name }}</span>
+                <span>{{ item.name }}&nbsp;&nbsp;x {{ item.qtty }} &nbsp;&nbsp;{{ item.expiration_date }}</span>
                 <div class="flex">
                   <button class="text-blue-500 mr-2" @click="editItemName(index)">
-                    Edit
+                    <i class="fa-solid fa-pen-to-square"></i>
                   </button>
                   <button class="text-red-500" @click="deleteItem(index)">
-                    Delete
+                    <i class="fa-solid fa-trash-can"></i>
                   </button>
                 </div>
               </div>
@@ -66,20 +77,64 @@ export default {
 
   
   setup() {
+
+
     
     const $store = useInventoryStore();
     const newNameInput = ref('');
 
     const editItemName = (index) => {
+
+      const originalname = $store.displayeditems[index].name;
+      const originalqtty = $store.displayeditems[index].qtty;
+      const originalexpirationDate = $store.displayeditems[index].expiration_date;
+
+
       const newName = prompt('Enter the new name for the item', $store.displayeditems[index].name);
+
+      if (newName === null) 
+      {
+        $store.displayeditems[index].name = originalname;
+        throw new Error('Invalid name');
+      }
+      
+
+      const newqtty = parseInt(prompt('Enter the new quantity for the item', $store.displayeditems[index].qtty));
+
+        if (isNaN(newqtty) || newqtty <= 0) {
+          $store.displayeditems[index].qtty = originalqtty;
+          throw new Error('Invalid quantity. Please enter a valid number greater than 0.');
+        }
+
+      const newexpirationDate = prompt('Enter the new expiration date for the item', $store.displayeditems[index].expiration_date);
+      
+      if (newexpirationDate === null) 
+      {
+        $store.displayeditems[index].expiration_date = originalexpirationDate;
+        throw new Error('Invalid expiration date');
+      }
+
       if (newName) {
-        $store.updateItemName(index, newName);
+        $store.updateItemName(index, newName, newqtty, newexpirationDate);
+      }
+    };
+
+    const editContainer = (index) => {
+      const newName = prompt('Enter the new name for the container', $store.containers[index].name);
+      if (newName) {
+        $store.updateContainerName(index, newName);
       }
     };
 
     const deleteItem = (index) => {
       $store.deleteItem(index);
     };
+
+
+    const deleteContainer = (index) => {
+      $store.deleteContainer(index);
+    };
+
 
     const addItem = () => {
       const name = prompt('Enter the name for the new item');
@@ -103,7 +158,9 @@ export default {
       $store,
       newNameInput,
       editItemName,
+      editContainer,
       deleteItem,
+      deleteContainer,
       addItem,
       selectContainer,
       addContainer,
