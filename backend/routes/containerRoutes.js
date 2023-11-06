@@ -11,5 +11,6 @@ module.exports = (db) => {
   router.put('/:id', (req, res) => containerController.updateContainer(req, res));
   router.delete('/:id', (req, res) => containerController.deleteContainer(req, res));
 
+  router.post('/moveItem', (req, res) => containerController.moveItemToContainer(req, res));
   return router;
 };
