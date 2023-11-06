@@ -1,86 +1,125 @@
-# Code Documentation for Vue.js Inventory Management App
+# Inventory Management System Documentation
 
-This document provides an overview of the code for an inventory management web application built using Vue.js. The application allows users to manage containers and items within those containers.
+This documentation explains the structure and functionality of an inventory management system implemented in Vue.js. The system allows users to manage containers and items within those containers.
 
-## Table of Contents
+## System Architecture
 
-1. Project Structure
-2. Vue.js Component
-3. Setup Function
-4. Actions in Pinia Store
-5. Getters in Pinia Store
-6. PlantUML Diagrams
+The system consists of two main components:
 
-## Project Structure
+1. **Frontend:** Implemented using Vue.js and Vuex for state management.
+2. **Backend:** A RESTful API server to store and retrieve container and item data.
 
-- **template.vue**: This is the Vue.js component that represents the user interface of the inventory management app. It includes a sidebar for managing containers and a section for managing items.
+## Frontend Overview
 
-- **script.vue**: The script part of the component includes JavaScript logic that interacts with the Pinia store and handles user interactions.
+### Vue.js Components
 
-- **src/store/index.js**: This is the Pinia store for managing the application's state, including containers, displayed items, and the selected container.
+The frontend is built using Vue.js, and it is divided into the following components:
 
-## Vue.js Component
+- **Sidebar:** A component that displays a list of containers and allows users to add, edit, and delete containers.
 
-### Sidebar
+- **Items:** A component that displays a list of items within the selected container and allows users to add, edit, and delete items.
 
-The sidebar in the Vue.js component is responsible for displaying a list of containers. Users can add, edit, and delete containers. It includes event handlers for these actions.
+### State Management
 
-### Items
+The state management is handled using Vuex with the following key pieces of state:
 
-The "Items" section displays a list of items within the selected container. Users can add, edit, and delete items. Event handlers for these actions are also included.
+- `containers`: An array that stores container data.
+- `displayeditems`: An array that stores the items currently displayed.
+- `selectedContainer`: Keeps track of the currently selected container.
 
-## Setup Function
+### Actions
 
-The `setup()` function within the Vue component handles the interaction between the component and the Pinia store. It sets up various methods and properties used in the template.
+The Vuex store includes various actions for interacting with the backend API and modifying the state:
 
-- `$store`: This variable connects the component to the Pinia store for state management.
+- `fetchContainers`: Retrieves container data from the backend.
+- `addContainer`: Adds a new container.
+- `updateContainerName`: Updates the name of a container.
+- `selectContainer`: Selects a container and fetches its items.
+- `addItem`: Adds a new item to the selected container.
+- `deleteItem`: Deletes an item from the selected container.
+- `deleteContainer`: Deletes a container and its associated items.
+- `updateItemName`: Updates the name, quantity, and expiration date of an item.
 
-- Methods: `editItemName`, `editContainer`, `deleteItem`, `deleteContainer`, `addItem`, `selectContainer`, and `addContainer` are all functions that allow users to perform CRUD operations on containers and items.
+## Backend Overview
 
-## Actions in Pinia Store
+### API Endpoints
 
-The Pinia store defines actions for managing the state of the application, such as fetching containers, adding containers, updating container names, selecting containers, adding items, deleting items, and more. These actions make API requests to interact with the server.
+The backend provides the following API endpoints:
 
-## Getters in Pinia Store
+- `/containers`: CRUD operations for containers.
+- `/items/:containerId`: Retrieves items associated with a container.
+- `/items/item/:itemId`: CRUD operations for items.
 
-The store also includes a getter called `containersCount`, which provides the count of containers in the state.
+### Data Storage
 
-## PlantUML Diagrams
+The data is stored in a database, and the API server interacts with the database to manage container and item information.
 
-### Class Diagram
+## Frontend Code
 
-```plantuml
-@startuml
-class VueComponent {
-  + template: String
-  + script: String
+### Vue Template
+
+The Vue template defines the layout of the application, including the sidebar and item list. It uses Vue directives to display and interact with data.
+
+### Vue Script
+
+The Vue script contains the logic for the frontend. It defines functions for adding, editing, and deleting containers and items. It also handles data retrieval and updates via Vuex.
+
+## Backend Code
+
+The backend code is not included here, but it consists of API endpoints and database interactions.
+
+## Code Documentation
+
+### `useInventoryStore` (Vuex Store)
+
+This function defines the Vuex store for managing container and item data. It includes state, actions, and getters.
+
+![Use Inventory Store](plantuml://
+@startmermaid
+class "useInventoryStore" {
+  - containers
+  - displayeditems
+  - selectedContainer
 }
 
-class PiniaStore {
-  + state: Object
-  + actions: Object
-  + getters: Object
+class "actions" {
+  - fetchContainers()
+  - addContainer(name)
+  - updateContainerName(index, newName)
+  - selectContainer(index)
+  - addItem(name)
+  - deleteItem(index)
+  - deleteContainer(index)
+  - updateItemName(index, newName, newqtty, newexpiration_date)
 }
 
-VueComponent --> PiniaStore
-@enduml
+class "getters" {
+  - containersCount
+}
 
-The class diagram illustrates the relationship between the Vue component and the Pinia store.
+"useInventoryStore" --> "actions"
+"useInventoryStore" --> "getters"
+@endmermaid
+)
 
-## PlantUML Sequence Diagram
+### Vue Component: Sidebar
 
-```plantuml
-@startuml
-!define User <<User>>
-!define VueComponent <<VueComponent>>
-!define PiniaStore <<PiniaStore>>
-!define API <<API>>
+The Sidebar component displays the list of containers and provides options to add, edit, and delete containers.
 
-User -> VueComponent: Interact with UI
-VueComponent -> PiniaStore: Access data and trigger actions
-PiniaStore -> API: Make API requests
-API --> PiniaStore: Respond with data
-PiniaStore --> VueComponent: Update UI
-@enduml
+### Vue Component: Items
 
-The sequence diagram illustrates the interaction flow between the user, the Vue component, the Pinia store, and the API in the inventory management application.
+The Items component displays the list of items within the selected container and allows adding, editing, and deleting items.
+
+### Helper Functions
+
+- `editItemName(index)`: Allows editing an item's name, quantity, and expiration date.
+- `editContainer(index)`: Allows editing a container's name.
+- `deleteItem(index)`: Deletes an item.
+- `deleteContainer(index)`: Deletes a container and its items.
+- `addItem()`: Adds a new item.
+- `selectContainer(index)`: Selects a container and fetches its items.
+- `addContainer()`: Adds a new container.
+
+## Conclusion
+
+This documentation provides an overview of the structure and functionality of the inventory management system implemented in Vue.js. It includes explanations of key components, state management, and actions in the frontend, as well as the API endpoints and data storage in the backend.
