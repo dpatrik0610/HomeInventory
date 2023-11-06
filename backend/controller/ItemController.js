@@ -8,7 +8,7 @@ class ItemController {
 
   async createItem(req, res) {
     try {
-      const { containerId, name, qtty, expiration_date } = req.body;
+      const { containerId, name, qtty, expiration_date = null } = req.body;
       if(!containerId || containerId === undefined) return res.status(400).json({message: "Container ID required."});
       if(!name) return res.status(400).json({message: "Name required."});
 
