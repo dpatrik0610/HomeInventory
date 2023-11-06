@@ -1,9 +1,11 @@
 const Container = require('../services/models/Container');
 const ContainerService = require('../services/ContainerService');
+const ItemService = require('../services/ItemService');
 
 class ContainerController {
   constructor(db) {
     this.containerService = new ContainerService(db);
+    this.itemService = new ItemService(db);
   }
 
   async createContainer(req, res) {
@@ -66,17 +68,30 @@ class ContainerController {
 
   async deleteContainer(req, res) {
     const { id } = req.params;
+    const container = await this.containerService.getContainerById(id);
+    const containerId = container._id.toString();
+
     try {
-      const isDeleted = await this.containerService.deleteContainer(id);
-      if (isDeleted) {
-        res.status(200).json({ message: 'Container deleted successfully' });
+      if (containerId) {
+        const itemsInContainer = await this.itemService.getItemsByContainerId(containerId);
+        itemsInContainer.forEach(async (item) => {
+          await this.itemService.deleteItem(item._id.toString());
+        });
+  
+        const isDeleted = await this.containerService.deleteContainer(containerId);
+        if (isDeleted) {
+          res.status(200).json({ message: 'Container deleted successfully' });
+        } else {
+          res.status(404).json({ error: 'Container not found' });
+        }
       } else {
         res.status(404).json({ error: 'Container not found' });
       }
     } catch (error) {
-    console.log(error);
+      console.log(error);
       res.status(500).json({ error: 'Failed to delete container' });
     }
+    res.status(200);
   }
 }
 
