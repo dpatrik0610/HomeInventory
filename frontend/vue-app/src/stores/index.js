@@ -65,8 +65,7 @@ export const useInventoryStore = defineStore('inventory', {
     }
       this.selectedContainer = this.containers[index];
       const id = this.selectedContainer._id;
-      console.log(id);
-
+      
       try {
         const response = await fetch(apiUrl + `/items/${id}`);
         const data = await response.json();
@@ -110,6 +109,36 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
+    async moveItem(itemindex, containerindex) {
+      if (!this.selectedContainer) {
+        console.error('No selected container to move item to.');
+        return;
+      }
+      
+      try{
+       
+          const itemId = this.displayeditems[itemindex]._id;
+          const containerId = this.containers[containerindex]._id;
+
+           await fetch(
+            apiUrl + `/containers/moveItem`,{
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                "itemId": itemId,
+                "toContainerId": containerId
+              }),
+            }
+          );
+          this.displayeditems.splice(itemindex, 1);
+
+      }
+      catch (error) {
+        console.error('Error moving item:', error);
+      }
+    },
     async deleteItem(index) {
       if (!this.selectedContainer) {
         console.error('No selected container to delete item from.');

@@ -46,6 +46,10 @@
               <div class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none">
                 <span>{{ item.name }}&nbsp;&nbsp;x {{ item.qtty }} &nbsp;&nbsp;{{ item.expiration_date }}</span>
                 <div class="flex">
+                  <button class="text-green-500 mr-2">
+                    <!--this is the move to container button -->
+                    <i class="fa-solid fa-arrow-right-arrow-left" @click="moveToContainer(index, 0)"></i> 
+                  </button>
                   <button class="text-blue-500 mr-2" @click="editItemName(index)">
                     <i class="fa-solid fa-pen-to-square"></i>
                   </button>
@@ -135,6 +139,10 @@ export default {
       $store.deleteContainer(index);
     };
 
+    const moveToContainer = (itemIndex, containerindex) => {
+      $store.moveItem(itemIndex, containerindex);
+    };
+
 
     const addItem = () => {
       const name = prompt('Enter the name for the new item');
@@ -153,6 +161,7 @@ export default {
         $store.addContainer(name);
       }
     };
+    
 
     return {
       $store,
@@ -164,7 +173,11 @@ export default {
       addItem,
       selectContainer,
       addContainer,
+      moveToContainer,  
     };
+
+
+    
   },
 };
 </script>
