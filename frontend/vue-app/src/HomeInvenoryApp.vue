@@ -10,24 +10,24 @@
           <div
             role="button"
             tabindex="0"
-            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none justify-between"
+            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none justify-between"
             @click="selectContainer(index)"
           >
             {{ container.name }}
             <div class="flex">
-                  <button class="text-blue-500 mr-2" @click="editContainer(index)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button class="text-red-500" @click="deleteContainer(index)">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
+              <button class="text-blue-500 mr-2" @click="editContainer(index)">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button class="text-red-500" @click="deleteContainer(index)">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
             </div>
           </div>
         </div>
         <div
           role="button"
           tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none"
           @click="addContainer"
         >
           Add Container
@@ -35,35 +35,43 @@
       </nav>
     </div>
 
-
-
     <!-- Items -->
     <div class="w-3/4 p-4">
       <div v-if="$store.selectedContainer">
         <h2 class="text-2xl font-bold">{{ $store.selectedContainer.name }}</h2>
         <ul>
-            <li v-for="(item, index) in $store.displayeditems" :key="index">
-              <div class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none">
-                <span>{{ item.name }}&nbsp;&nbsp;x {{ item.qtty }} &nbsp;&nbsp;{{ item.expiration_date }}</span>
-                <div class="flex">
-                  <button class="text-green-500 mr-2">
-                    <!--this is the move to container button -->
-                    <i class="fa-solid fa-arrow-right-arrow-left" @click="moveToContainer(index, 0)"></i> 
-                  </button>
-                  <button class="text-blue-500 mr-2" @click="editItemName(index)">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                  </button>
-                  <button class="text-red-500" @click="deleteItem(index)">
-                    <i class="fa-solid fa-trash-can"></i>
-                  </button>
-                </div>
+          <li v-for="(item, index) in $store.displayeditems" :key="index">
+            <div
+              class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none"
+            >
+              <span>{{ item.name }}&nbsp;&nbsp;x {{ item.qtty }} &nbsp;&nbsp;{{ item.expiration_date }}</span>
+              <div class="flex">
+                <button class="text-green-500 mr-2" @click="toggleDropdown(index)">
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                  <div v-if="item.showDropdown">
+                    <ul class="absolute mt-2 py-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 ">
+                      <li v-for="(container, cIndex) in $store.containers" :key="cIndex">
+                        <div v-if="container !== $store.selectedContainer" class="cursor-pointer p-2 hover:bg-gray-100" @click="moveToContainer(index, cIndex)">
+                          {{ container.name }}
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                </button>
+                <button class="text-blue-500 mr-2" @click="editItemName(index)">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </button>
+                <button class="text-red-500" @click="deleteItem(index)">
+                  <i class="fa-solid fa-trash-can"></i>
+                </button>
               </div>
-            </li>
-      </ul>
+            </div>
+          </li>
+        </ul>
         <div
           role="button"
           tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover:bg-opacity-80 focus:bg-blue-50 focus.bg-opacity-80 active:bg-blue-50 active:bg-opacity-80 hover:text-blue-900 focus-text-blue-900 active:text-blue-900 outline-none"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none"
           @click="addItem"
         >
           + Add Item
@@ -72,6 +80,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import { ref } from 'vue';
@@ -123,6 +132,9 @@ export default {
       }
     };
 
+      const toggleDropdown = (index) => {
+        $store.displayeditems[index].showDropdown = !$store.displayeditems[index].showDropdown;
+      };
     const editContainer = (index) => {
       const newName = prompt('Enter the new name for the container', $store.containers[index].name);
       if (newName) {
@@ -173,7 +185,8 @@ export default {
       addItem,
       selectContainer,
       addContainer,
-      moveToContainer,  
+      moveToContainer,
+      toggleDropdown,  
     };
 
 

@@ -1,7 +1,7 @@
 // src/store/index.js
 import { defineStore } from 'pinia';
 
-const apiUrl = '3000/api';
+const apiUrl = 'http://91.83.9.87:3000/api';
 
 export const useInventoryStore = defineStore('inventory', {
   state: () => ({
@@ -102,7 +102,7 @@ export const useInventoryStore = defineStore('inventory', {
           }
         );
         const data = await response.json();
-        console.log(data);
+        
         this.displayeditems.push(data);
       } catch (error) {
         console.error('Error adding item:', error);
