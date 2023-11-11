@@ -25,7 +25,7 @@ import { useInventoryStore } from './stores/index';
 export default {
 
 setup () {
-    const $store=useInventoryStore();
+    const $store=useInventoryStore();    
 
     return {}
 }
