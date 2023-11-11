@@ -21,9 +21,11 @@
 </template>
 
 <script>
+import { useInventoryStore } from './stores/index';
 export default {
+
 setup () {
-    
+    const $store=useInventoryStore();
 
     return {}
 }
