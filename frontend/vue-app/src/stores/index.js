@@ -48,6 +48,16 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
+    searchItemsByName(query) {
+      // Filter items based on the name
+      const filteredItems = this.allItems.filter((item) =>
+        item.name.toLowerCase().includes(query.toLowerCase())
+      );
+      // Update the state with the filtered items
+      this.allItems = filteredItems;
+      
+    },
+  },
 
     async updateContainerName(index, newName) {
       const containerId = this.containers[index]._id;
