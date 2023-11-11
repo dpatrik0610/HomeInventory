@@ -87,7 +87,7 @@ import { ref } from 'vue';
 import { useInventoryStore } from './stores/index';
 
 export default {
-
+  
   
   setup() {
 

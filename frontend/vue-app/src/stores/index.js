@@ -1,7 +1,8 @@
 // src/store/index.js
 import { defineStore } from 'pinia';
 
-const apiUrl = 'http://91.83.9.87:3000/api';
+const apiUrl = import.meta.env.VITE_APP_API_URL;
+
 
 export const useInventoryStore = defineStore('inventory', {
   state: () => ({
