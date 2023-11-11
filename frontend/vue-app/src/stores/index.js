@@ -64,11 +64,14 @@ export const useInventoryStore = defineStore('inventory', {
           method: 'GET',
         })
         const data = await response.json();
+        this.selectContainerById(data._id);
         return data;
       } catch (error) {
         console.error('Error fetching containers:', error);
       }
     },
+
+
 
    async selectContainer(index) {
 
@@ -174,6 +177,21 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
+    selectContainerById(containerId) {
+      let foundContainerIndex = -1;
+
+      this.containers.forEach((container, index) => {
+        if (container._id === containerId) {
+          foundContainerIndex = index;
+        }
+      });
+
+      if (foundContainerIndex !== -1) {
+        this.selectContainer(foundContainerIndex);
+      } else {
+        console.error('Container with ID', containerId, 'not found.');
+      }
+    },
 
 
     async deleteContainer(index) {
