@@ -57,6 +57,17 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
+
+    async getContainerByItemId(itemId) {
+      try {
+        const response = await fetch(apiUrl + `/containers/search/${itemId}`);
+        const data = await response.json();
+        return data;
+      } catch (error) {
+        console.error('Error fetching containers:', error);
+      }
+    },
+
    async selectContainer(index) {
 
     if (!this.containers[index]) {
