@@ -87,9 +87,22 @@ class ItemController {
       }
     } catch (error) {
       console.log(error);
-      res.status(500).json({ error: 'Failed to delete item' });
+      res.status(500).json({ error: 'Failed to delete item.' });
+    }
+  }
+
+  async getAllItems(req, res) {
+    try {
+      const items = await this.itemService.getAllItems();
+      console.log(items);
+      if (!items || !items[0]) {
+        return res.status(404).send('No items in the database.');
+      }
+      res.status(200).json(items);
+    } catch (err) {
+      console.log(error);
+      res.status(500).json({ error: 'Internal Server Error.' });
     }
   }
 }
-
 module.exports = ItemController;

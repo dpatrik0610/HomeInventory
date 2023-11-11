@@ -10,6 +10,10 @@ class ItemService {
     const result = await this.items.insertOne(item);
     return result.insertedId;
   }
+  // Get all items
+  async getAllItems() {
+    return await this.items.find().toArray();
+  }
 
   // Get all items in a container
   async getItemsByContainerId(containerId) {  
