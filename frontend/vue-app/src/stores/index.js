@@ -8,9 +8,20 @@ export const useInventoryStore = defineStore('inventory', {
   state: () => ({
     containers: [],
     displayeditems: [],
+    allItems: [],
     selectedContainer: null,
   }),
   actions: {
+
+    async fetchAllItems() {
+      try {
+        const response = await fetch(apiUrl + '/items');
+        const data = await response.json();
+        this.allItems = data;
+      } catch (error) {
+        console.error('Error fetching items:', error);
+      }
+    },
     async fetchContainers() {
       try {
         const response = await fetch(apiUrl + '/containers');

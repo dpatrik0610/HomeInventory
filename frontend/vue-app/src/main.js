@@ -16,4 +16,5 @@ app.mount('#app');
 const inventoryStore = useInventoryStore();
 
 inventoryStore.fetchContainers();
+inventoryStore.fetchAllItems();
 
