@@ -60,7 +60,9 @@ export const useInventoryStore = defineStore('inventory', {
 
     async getContainerByItemId(itemId) {
       try {
-        const response = await fetch(apiUrl + `/containers/search/${itemId}`);
+        const response = await fetch(apiUrl + `/containers/search/${itemId}`,{
+          method: 'GET',
+        })
         const data = await response.json();
         return data;
       } catch (error) {
