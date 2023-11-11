@@ -18,7 +18,7 @@
               <button class="text-blue-500 mr-2" @click="editContainer(index)">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
-              <button class="text-red-500" @click="deleteContainer(index)">
+              <button class="text-green-500" @click="deleteContainer(index)">
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>
@@ -87,7 +87,7 @@ import { ref } from 'vue';
 import { useInventoryStore } from './stores/index';
 
 export default {
-  
+
   
   setup() {
 
