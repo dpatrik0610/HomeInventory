@@ -131,7 +131,25 @@ class ContainerController {
       res.status(500).json({ error: 'Failed to move item' });
     }
   }
-  
+
+  async getItemContainer(req, res) {
+    const { id } = req.params;
+    try {
+      const item = await this.itemService.getItemById(id);
+      if (!item) {
+        return res.status(404).json({ error: 'Item not found' });
+        }
+      
+      const container = await this.containerService.getContainerById(item.containerId.toString());
+      if(!container){
+        return res.status(404).json({ error: "Container not found"});
+      }
+      res.status(200).json(container);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: err })
+    } 
+  }
 }
 
 module.exports = ContainerController;

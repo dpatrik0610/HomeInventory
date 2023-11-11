@@ -12,5 +12,6 @@ module.exports = (db) => {
   router.delete('/:id', (req, res) => containerController.deleteContainer(req, res));
 
   router.post('/moveItem', (req, res) => containerController.moveItemToContainer(req, res));
+  router.get('/search/:id', (req, res) => containerController.getItemContainer(req, res));
   return router;
 };
