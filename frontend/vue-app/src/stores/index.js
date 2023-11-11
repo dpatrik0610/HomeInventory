@@ -22,6 +22,8 @@ export const useInventoryStore = defineStore('inventory', {
         console.error('Error fetching items:', error);
       }
     },
+
+
     async fetchContainers() {
       try {
         const response = await fetch(apiUrl + '/containers');
@@ -46,16 +48,6 @@ export const useInventoryStore = defineStore('inventory', {
       } catch (error) {
         console.error('Error adding container:', error);
       }
-    },
-
-    searchItemsByName(query) {
-      // Filter items based on the name
-      const filteredItems = this.allItems.filter((item) =>
-        item.name.toLowerCase().includes(query.toLowerCase())
-      );
-      // Update the state with the filtered items
-      this.allItems = filteredItems;
-      
     },
 
 
