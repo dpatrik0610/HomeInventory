@@ -94,7 +94,6 @@ class ItemController {
   async getAllItems(req, res) {
     try {
       const items = await this.itemService.getAllItems();
-      console.log(items);
       if (!items || !items[0]) {
         return res.status(404).send('No items in the database.');
       }
