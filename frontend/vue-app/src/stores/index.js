@@ -57,7 +57,7 @@ export const useInventoryStore = defineStore('inventory', {
       this.allItems = filteredItems;
       
     },
-  },
+
 
     async updateContainerName(index, newName) {
       const containerId = this.containers[index]._id;
