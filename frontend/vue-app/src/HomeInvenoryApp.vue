@@ -45,7 +45,7 @@
             class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-800 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
           >
             <span>
-              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">x {{ item.qtty }}</span>&nbsp;&nbsp;{{ item.name }}
+              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">{{ item.qtty }}x </span>&nbsp;&nbsp;{{ item.name }}
               <!-- Conditionally render expiration date -->
               <template v-if="item.expiration_date">
                 &nbsp;( Expires at: {{ item.expiration_date }} )
@@ -126,6 +126,13 @@ export default {
       const newexpirationDate = prompt('Enter the new expiration date for the item', $store.displayeditems[index].expiration_date);
       
       if (newexpirationDate === null) 
+      {
+        $store.displayeditems[index].expiration_date = originalexpirationDate;
+        throw new Error('Invalid expiration date');
+      }
+
+      
+      if (newexpirationDate === "null") 
       {
         $store.displayeditems[index].expiration_date = originalexpirationDate;
         throw new Error('Invalid expiration date');
