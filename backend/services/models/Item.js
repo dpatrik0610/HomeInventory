@@ -30,8 +30,7 @@ class Item {
 }
 
 function isValidDate(dateString) {
-  // You can implement a more sophisticated date validation logic here
-  const regex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+  const regex = /^(?:20\d\d)-(?:0[1-9]|1[0-2])-(?:0[1-9]|[12][0-9]|3[01])$/;
   return regex.test(dateString);
 }
 
