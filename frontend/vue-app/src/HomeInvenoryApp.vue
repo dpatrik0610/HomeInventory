@@ -62,6 +62,9 @@
                         {{ container.name }}
                       </div>
                     </li>
+                    <button class="cursor-pointer p-2 hover:bg-red-500 hover:text-white m-1 rounded-lg" @click="closeDropdown(index)">
+                      Cancel
+                    </button>
                   </ul>
                 </div>
               </button>
@@ -156,6 +159,10 @@ export default {
       const toggleDropdown = (index) => {
         $store.displayeditems[index].showDropdown = !$store.displayeditems[index].showDropdown;
       };
+
+      const closeDropdown = (index) => {
+        $store.displayeditems[index].showDropdown = false;
+      }
     const editContainer = (index) => {
       const newName = prompt('Enter the new name for the container', $store.containers[index].name);
       if (newName) {
