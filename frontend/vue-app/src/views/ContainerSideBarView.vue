@@ -1,10 +1,10 @@
 <template>
-    <div class="relative  flex flex-col min-h-screen bg-clip-border h-screen text-white w-64 p-4 bg-black bg-opacity-20">
+    <div class="bg-clip-border h-screen text-white p-4 bg-black bg-opacity-20">
     <div class="mb-2 p-4">
       <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
       <p><small>(beta v0.2)</small></p>
     </div>
-    <nav class="flex flex-col gap-1 min-w-[220px] p-2 font-sans text-base font-normal overflow-auto text-white scrollbar-thin scrollbar-thumb-rounded" style="max-height: 440px ;">
+    <nav class="min-w-[220px] font-sans text-base font-normal overflow-auto text-white scrollbar-thin scrollbar-thumb-rounded" style="max-height: 72vh ;">
       <div v-for="(container, index) in $store.containers" :key="index">
         <div
           role="button"
@@ -14,7 +14,7 @@
         >
           {{ container.name }}
           <div class="flex">
-            <button class="text-blue-500 mr-2" @click="editContainer(index)">
+            <button class="text-yellow-500 mr-2" @click="editContainer(index)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
             <button class="text-red-500" @click="deleteContainer(index)">
