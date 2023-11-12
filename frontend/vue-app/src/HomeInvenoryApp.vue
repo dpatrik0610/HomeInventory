@@ -45,10 +45,10 @@
             class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-800 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
           >
             <span>
-              {{ item.name }}&nbsp;&nbsp;x {{ item.qtty }}
+              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">x {{ item.qtty }}</span>&nbsp;&nbsp;{{ item.name }}
               <!-- Conditionally render expiration date -->
               <template v-if="item.expiration_date">
-                &nbsp;&nbsp;( Expires at: {{ item.expiration_date }} )
+                &nbsp;( Expires at: {{ item.expiration_date }} )
               </template>
             </span>
             <div class="flex">
