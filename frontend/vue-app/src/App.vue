@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <Searchingapp></Searchingapp>
     <home-inventory-app></home-inventory-app>
     
   </div>
@@ -15,7 +14,6 @@ export default {
   name: "App",
   
   components: {
-    Searchingapp,
     HomeInventoryApp,
     
 },

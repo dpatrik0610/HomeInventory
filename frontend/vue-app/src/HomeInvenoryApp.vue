@@ -1,16 +1,16 @@
 <template>
-  <div class="flex bg-gray-100 h-screen">
+  <div class="flex bg-gray-900 text-white h-screen">
     <!-- Sidebar -->
-    <div class="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 w-64 p-4 shadow-xl shadow-blue-gray-900/5">
+  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white w-64 p-4 shadow-xl shadow-blue-gray-900/5">
       <div class="mb-2 p-4">
-        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-gray-900">Home Inventory</h5>
+        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
       </div>
-      <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-gray-700">
+      <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-white">
         <div v-for="(container, index) in $store.containers" :key="index">
           <div
             role="button"
             tabindex="0"
-            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none justify-between"
+            class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none justify-between"
             @click="selectContainer(index)"
           >
             {{ container.name }}
@@ -27,7 +27,7 @@
         <div
           role="button"
           tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500"
           @click="addContainer"
         >
           Add Container
@@ -35,49 +35,56 @@
       </nav>
     </div>
 
-    <!-- Items -->
-    <div class="w-3/4 p-4">
-      <div v-if="$store.selectedContainer">
-        <h2 class="text-2xl font-bold">{{ $store.selectedContainer.name }}</h2>
-        <ul>
-          <li v-for="(item, index) in $store.displayeditems" :key="index">
-            <div
-              class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none"
-            >
-              <span>{{ item.name }}&nbsp;&nbsp;x {{ item.qtty }} &nbsp;&nbsp;{{ item.expiration_date }}</span>
-              <div class="flex">
-                <button class="text-green-500 mr-2" @click="toggleDropdown(index)">
-                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                  <div v-if="item.showDropdown">
-                    <ul class="absolute mt-2 py-2 bg-white border border-gray-200 rounded-lg shadow-lg z-10 ">
-                      <li v-for="(container, cIndex) in $store.containers" :key="cIndex">
-                        <div v-if="container !== $store.selectedContainer" class="cursor-pointer p-2 hover:bg-gray-100" @click="moveToContainer(index, cIndex)">
-                          {{ container.name }}
-                        </div>
-                      </li>
-                    </ul>
-                  </div>
-                </button>
-                <button class="text-blue-500 mr-2" @click="editItemName(index)">
-                  <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button class="text-red-500" @click="deleteItem(index)">
-                  <i class="fa-solid fa-trash-can"></i>
-                </button>
-              </div>
+  <!-- Items -->
+  <div class="w-3/4 p-4">
+    <div v-if="$store.selectedContainer">
+      <h2 class="text-2xl font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
+      <ul>
+        <li v-for="(item, index) in $store.displayeditems" :key="index">
+          <div
+            class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-800 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
+          >
+            <span>
+              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">x {{ item.qtty }}</span>&nbsp;&nbsp;{{ item.name }}
+              <!-- Conditionally render expiration date -->
+              <template v-if="item.expiration_date">
+                &nbsp;( Expires at: {{ item.expiration_date }} )
+              </template>
+            </span>
+            <div class="flex">
+              <button class="text-gray-500 mr-2" @click="toggleDropdown(index)">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                <div v-if="item.showDropdown">
+                  <ul class="absolute mt-2 py-2 bg-gray-900 hover:text-gray border border-gray-200 rounded-lg shadow-lg z-10">
+                    <li v-for="(container, cIndex) in $store.containers" :key="cIndex">
+                      <div v-if="container !== $store.selectedContainer" class="cursor-pointer p-2 hover:bg-gray-500 hover:text-white m-1 rounded-lg" @click="moveToContainer(index, cIndex)">
+                        {{ container.name }}
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+              </button>
+              <button class="text-blue-500 mr-2" @click="editItemName(index)">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button class="text-red-500" @click="deleteItem(index)">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
             </div>
-          </li>
-        </ul>
-        <div
-          role="button"
-          tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-50 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 hover-text-blue-900 focus-text-blue-900 active-text-blue-900 outline-none"
-          @click="addItem"
-        >
-          + Add Item
-        </div>
+          </div>
+        </li>
+      </ul>
+      <div
+        role="button"
+        tabindex="0"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500"
+        @click="addItem"
+      >
+        + Add Item
       </div>
     </div>
+  </div>
+
   </div>
 </template>
 
@@ -87,12 +94,9 @@ import { ref } from 'vue';
 import { useInventoryStore } from './stores/index';
 
 export default {
-  
-  
+
   setup() {
 
-
-    
     const $store = useInventoryStore();
     const newNameInput = ref('');
 
