@@ -18,7 +18,7 @@ class ItemController {
       
       res.status(201).json(createdItem);
     } catch (error) {
-      console.log(error);
+      console.info(error);
       res.status(500).json({ error: 'Failed to create item' });
     }
   }
