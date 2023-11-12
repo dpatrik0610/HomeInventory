@@ -1,7 +1,7 @@
 <template>
   <div class="flex text-white h-screen">
     <!-- Sidebar -->
-  <div class="relative flex flex-col bg-clip-border text-white w-64 p-4 bg-black bg-opacity-20">
+  <div class="relative  flex flex-col min-h-screen bg-clip-border h-screen text-white w-64 p-4 bg-black bg-opacity-20">
       <div class="mb-2 p-4">
         <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
         <p><small>(beta v0.1)</small></p>
@@ -37,8 +37,8 @@
     </div>
 
   <!-- Items -->
-  <div class="w-full p-4">
-    <div v-if="$store.selectedContainer">
+  <div class="w-full p-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded" >
+    <div v-if="$store.selectedContainer" >
       <h2 class="text-2xl font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
       <ul>
         <li v-for="(item, index) in $store.displayeditems" :key="index">
