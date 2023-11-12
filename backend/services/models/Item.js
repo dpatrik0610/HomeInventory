@@ -13,7 +13,7 @@ class Item {
     }
 
     // Validate qtty
-    if (typeof qtty !== 'number' || qtty < 1 || qtty > 1000) {
+    if (typeof qtty !== 'number' || qtty < 1 || qtty > 10000) {
       throw new Error('Quantity must be a positive number with a maximum value of 1000');
     }
 
