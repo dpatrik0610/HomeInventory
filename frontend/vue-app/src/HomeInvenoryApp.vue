@@ -3,7 +3,7 @@
     <!-- Sidebar -->
   <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white p-4 shadow-xl shadow-blue-gray-900/5">
       <div class="mb-2 p-4">
-        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
+        <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory (beta v0.1)</h5>
       </div>
       <nav class="flex flex-col gap-1 min-w-[240px] p-2 font-sans text-base font-normal text-white">
         <div v-for="(container, index) in $store.containers" :key="index">
