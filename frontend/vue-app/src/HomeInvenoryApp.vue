@@ -1,7 +1,7 @@
 <template>
   <div class="flex bg-gray-900 text-white h-screen">
     <!-- Sidebar -->
-  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white w-64 p-4 shadow-xl shadow-blue-gray-900/5">
+  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white p-4 shadow-xl shadow-blue-gray-900/5">
       <div class="mb-2 p-4">
         <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
       </div>
@@ -36,7 +36,7 @@
     </div>
 
   <!-- Items -->
-  <div class="w-3/4 p-4">
+  <div class="w-full p-4">
     <div v-if="$store.selectedContainer">
       <h2 class="text-2xl font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
       <ul>
