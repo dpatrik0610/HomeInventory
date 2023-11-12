@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="bg-gradient-to-t from-slate-700 to-slate-900">
     <Searchingapp></Searchingapp>
     <home-inventory-app></home-inventory-app>
     

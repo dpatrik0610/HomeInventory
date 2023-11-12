@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-center items-center bg-gray-800">
+  <div class="flex justify-center items-center">
     <div class="w-full">
-      <form class="bg-gray-800 rounded-lg shadow-md p-6" @submit.prevent="goToItem">
+      <form class="shadow-md p-6" @submit.prevent="goToItem">
         <label for="default-search" class="text-sm font-medium text-gray-700 sr-only dark:text-white">
           Search
         </label>
@@ -28,14 +28,14 @@
             @input="updateSuggestions"
             type="search"
             id="default-search"
-            class="block w-full p-2 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            class="block w-full p-2 pl-8 text-sm text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search for items"
             required
           />
           <button
             type="submit"
             @click="goToItem"
-            class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            class="text-white border border-blue-500 hover:bg-blue-900 hover:bg-opacity-40 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm p-2 ml-2"
           >
             Search
           </button>

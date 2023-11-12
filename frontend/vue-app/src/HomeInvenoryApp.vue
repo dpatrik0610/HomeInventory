@@ -1,7 +1,7 @@
 <template>
-  <div class="flex bg-gray-900 text-white h-screen">
+  <div class="flex text-white h-screen">
     <!-- Sidebar -->
-  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white p-4 shadow-xl shadow-blue-gray-900/5">
+  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white w-64 p-4 shadow-xl shadow-blue-gray-900/5">
       <div class="mb-2 p-4">
         <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
         <p><small>(beta v0.1)</small></p>
@@ -28,7 +28,7 @@
         <div
           role="button"
           tabindex="0"
-          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500"
+          class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500 hover:bg-opacity-40"
           @click="addContainer"
         >
           Add Container
@@ -46,7 +46,7 @@
             class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-gray-800 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
           >
             <span>
-              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">x {{ item.qtty }}</span>&nbsp;&nbsp;{{ item.name }}
+              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">{{ item.qtty }}x </span>&nbsp;&nbsp;{{ item.name }}
               <!-- Conditionally render expiration date -->
               <template v-if="item.expiration_date">
                 &nbsp;( Expires at: {{ item.expiration_date }} )
@@ -78,7 +78,7 @@
       <div
         role="button"
         tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500"
+        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500 hover:bg-opacity-40"
         @click="addItem"
       >
         + Add Item
@@ -95,6 +95,15 @@ import { ref } from 'vue';
 import { useInventoryStore } from './stores/index';
 
 export default {
+
+  data() {
+    return {
+      isHovered: false,
+    };
+  },
+  methods: {
+    
+  },
 
   setup() {
 
@@ -127,6 +136,13 @@ export default {
       const newexpirationDate = prompt('Enter the new expiration date for the item', $store.displayeditems[index].expiration_date);
       
       if (newexpirationDate === null) 
+      {
+        $store.displayeditems[index].expiration_date = originalexpirationDate;
+        throw new Error('Invalid expiration date');
+      }
+
+      
+      if (newexpirationDate === "null") 
       {
         $store.displayeditems[index].expiration_date = originalexpirationDate;
         throw new Error('Invalid expiration date');
