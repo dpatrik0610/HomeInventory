@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-center items-center">
+  <div class="flex justify-center items-center relative">
     <div class="w-full">
       <form class="shadow-md p-6" @submit.prevent="goToItem">
         <label for="default-search" class="text-sm font-medium text-gray-700 sr-only dark:text-white">
@@ -40,7 +40,7 @@
             Search
           </button>
         </div>
-        <ul v-if="suggestions.length" class="mt-2 text-white">
+        <ul v-if="suggestions.length" class="mt-2 text-white absolute z-10 bg-gray-800 rounded-lg p-2 w-2/4 left-1/4">
           <li v-for="suggestion in suggestions" :key="suggestion" @click="selectSuggestion(suggestion)">
             {{ suggestion }}
           </li>
