@@ -1,7 +1,7 @@
 <template>
-  <div class="flex justify-center items-center bg-gray-100">
+  <div class="flex justify-center items-center bg-gray-800">
     <div class="w-full">
-      <form class="bg-white rounded-lg shadow-md p-6" @submit.prevent="searchItems">
+      <form class="bg-gray-800 rounded-lg shadow-md p-6" @submit.prevent="goToItem">
         <label for="default-search" class="text-sm font-medium text-gray-700 sr-only dark:text-white">
           Search
         </label>
@@ -34,13 +34,13 @@
           />
           <button
             type="submit"
-            @click="searchItems"
+            @click="goToItem"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 ml-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             Search
           </button>
         </div>
-        <ul v-if="suggestions.length" class="mt-2">
+        <ul v-if="suggestions.length" class="mt-2 text-white">
           <li v-for="suggestion in suggestions" :key="suggestion" @click="selectSuggestion(suggestion)">
             {{ suggestion }}
           </li>
@@ -53,13 +53,18 @@
 <script>
 import { ref, computed } from 'vue';
 import { useInventoryStore } from './stores/index';
-import  {getContainerByItemId} from './stores/index';
-
 export default {
   setup() {
     const $store = useInventoryStore();
     const searchQuery = ref('');
     const suggestions = ref([]);
+
+      const foundItem = $store.allItems.find((item) => item.name === searchQuery.value);
+  if (foundItem && foundItem.itemId) {
+    // Proceed with the logic
+  } else {
+    console.log('Item or item ID not found');
+}
 
     const updateSuggestions = () => {
       if (searchQuery.value) {
@@ -82,12 +87,29 @@ export default {
       suggestions.value = []; // Clear suggestions after selecting
     };
 
+    const goToItem = () => {
+  if (searchQuery.value) {
+    const foundItem = $store.allItems.find((item) => item.name === searchQuery.value);
+    if (foundItem) {
+      const container = $store.getContainerByItemId(foundItem._id);
+      // Do something with the container, e.g., store it in a state or perform an action
+      console.log('Container:', container);
+    } else {
+      console.log('Item not found');
+    }
+  } else {
+    console.log('Search query is empty');
+  }
+};
+
+
     return {
       searchQuery,
       suggestions,
       updateSuggestions,
       searchItems,
       selectSuggestion,
+      goToItem,
     };
   },
 };
