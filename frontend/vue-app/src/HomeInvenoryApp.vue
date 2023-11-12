@@ -1,5 +1,5 @@
 <template>
-  <div class="flex bg-gray-900 text-white h-screen">
+  <div class="flex bg-gradient-to-t from-sky-900 to-cyan-900  text-white h-screen">
     <!-- Sidebar -->
   <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white w-64 p-4 shadow-xl shadow-blue-gray-900/5">
       <div class="mb-2 p-4">
@@ -94,6 +94,15 @@ import { ref } from 'vue';
 import { useInventoryStore } from './stores/index';
 
 export default {
+
+  data() {
+    return {
+      isHovered: false,
+    };
+  },
+  methods: {
+    
+  },
 
   setup() {
 
