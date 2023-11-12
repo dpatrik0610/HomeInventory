@@ -1,14 +1,15 @@
 <template>
-    <div class="w-full p-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded" >
+
+    <div class="w-full mr-3 p-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded" style="max-height: 100vh;">
     <div v-if="$store.selectedContainer" >
       <h2 class="text-2xl font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
       <ul>
         <li v-for="(item, index) in $store.displayeditems" :key="index">
           <div
-            class="flex justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
+            class="flex overflow-auto justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
           >
             <span>
-              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80">{{ item.qtty }}x </span>&nbsp;&nbsp;{{ item.name }}
+              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80 mr-3">&nbsp;{{ item.qtty }}x&nbsp;</span>{{ item.name }}
               <!-- Conditionally render expiration date -->
               <template v-if="item.expiration_date">
                 &nbsp;( Expires at: {{ item.expiration_date }} )
@@ -50,6 +51,7 @@
       </div>
     </div>
   </div>
+
 </template>
 
 <script>
