@@ -1,7 +1,7 @@
 <template>
   <div class="flex text-white h-screen">
     <!-- Sidebar -->
-  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white w-64 p-4 shadow-xl shadow-blue-gray-900/5">
+  <div class="relative flex flex-col bg-clip-border bg-gray-800 text-white w-64 p-4 bg-black bg-opacity-10">
       <div class="mb-2 p-4">
         <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
         <p><small>(beta v0.1)</small></p>
