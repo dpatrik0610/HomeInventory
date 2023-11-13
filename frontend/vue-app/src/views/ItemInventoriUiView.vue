@@ -19,7 +19,7 @@
               <button class="text-blue-500 mr-2" @click="toggleDropdown(index)">
                 <i class="fa-solid fa-arrow-right-arrow-left"></i>
                 <div v-if="item.showDropdown">
-                  <ul class="absolute mt-2 py-2 bg-gray-900 hover:text-gray border border-gray-200 rounded-lg shadow-lg z-10">
+                  <ul class="absolute mt-2 py-2 bg-gray-900 hover:text-gray border border-gray-200 rounded-lg shadow-lg">
                     <li v-for="(container, cIndex) in $store.containers" :key="cIndex">
                       <div v-if="container !== $store.selectedContainer" class="cursor-pointer p-2 hover:bg-blue-500 hover:text-white m-1 rounded-lg" @click="moveToContainer(index, cIndex)">
                         {{ container.name }}
