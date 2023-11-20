@@ -31,6 +31,12 @@ class ContainerService {
     const result = await this.containers.deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount > 0;
   }
+
+  async getContainerCount(){
+    const count = await this.containers.countDocuments();
+    return count;
+  }
+  
 }
 
 module.exports = ContainerService;
