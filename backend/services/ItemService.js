@@ -40,6 +40,12 @@ class ItemService {
     const result = await this.items.deleteOne(query);
     return result.deletedCount;
   }
+
+  async getItemCountByContainerId(containerId) {
+    const query = { containerId: new ObjectId(containerId) };
+    const count = await this.items.countDocuments(query);
+    return count;
+  }
 }
 
 module.exports = ItemService;

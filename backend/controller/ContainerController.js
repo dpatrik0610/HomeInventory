@@ -10,6 +10,11 @@ class ContainerController {
   }
 
   async createContainer(req, res) {
+    const containerCount = await this.containerService.getContainerCount();
+    if(containerCount >= 15) {
+      return res.status(400).json({ error: 'Maximum number of containers reached' });
+    }
+
     try {
       const { name, description } = req.body;
       if(!name) return res.status(400).json({message: "Name required."});
