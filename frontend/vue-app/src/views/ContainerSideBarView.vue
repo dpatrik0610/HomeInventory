@@ -2,7 +2,7 @@
     <div class="bg-clip-border h-screen text-white p-4 bg-black bg-opacity-20">
     <div class="mb-2 p-4">
       <h5 class="block antialiased tracking-normal font-sans text-xl font-semibold leading-snug text-white">Home Inventory</h5>
-      <p><small>(beta v0.2)</small></p>
+      <p><small>(beta v0.3)</small></p>
     </div>
     <nav class="min-w-[220px] font-sans text-base font-normal overflow-auto text-white scrollbar-thin scrollbar-thumb-rounded" style="max-height: 72vh ;">
       <div v-for="(container, index) in $store.containers" :key="index">
@@ -31,7 +31,11 @@
         @click="addContainer"
       >
         Add Container
-      </div>    
+      </div>
+      
+      <div class=" justify-items-center ">
+        <p><small> Container limit : {{$store.containers.length}}/{{15}}</small></p>
+      </div>
   </div>
 
 </template>

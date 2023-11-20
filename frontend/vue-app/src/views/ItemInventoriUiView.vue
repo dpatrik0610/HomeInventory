@@ -2,11 +2,22 @@
 
     <div class="w-full mr-3 p-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded" style="max-height: 100vh;">
     <div v-if="$store.selectedContainer" >
-      <h2 class="text-2xl font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
+      <div class="grid gap-4 grid-cols-2 w-full text-3xl">
+        <h2 class="font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
+        <div
+              role="button"
+              tabindex="0"
+              class=" text-right mt-1 mr-3"
+              @click="addItem"
+            > 
+            <i class="text-2xl fa-solid fa-circle-plus text-green-500"></i>
+          </div>
+      </div>
+            
       <ul>
         <li v-for="(item, index) in $store.displayeditems" :key="index">
           <div
-            class="flex overflow-auto justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
+            class="flex overflow-auto justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none"
           >
             <span>
               <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80 mr-3">&nbsp;{{ item.qtty }}x&nbsp;</span>{{ item.name }}
@@ -41,13 +52,8 @@
           </div>
         </li>
       </ul>
-      <div
-        role="button"
-        tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500 hover:bg-opacity-40"
-        @click="addItem"
-      >
-        + Add Item
+      <div class=" justify-items-center ">
+        <p><small> Container limit : {{$store.displayeditems.length}}/{{20}}</small></p>
       </div>
     </div>
   </div>
