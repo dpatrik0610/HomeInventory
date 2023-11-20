@@ -100,7 +100,7 @@ export const useInventoryStore = defineStore('inventory', {
         const response = await fetch(apiUrl + `/items/${id}`);
         const data = await response.json();
         this.displayeditems = data;
-        console.log(this.displayeditems);
+  
       } catch (error) {
         console.error('Error fetching containers:', error);
       }
@@ -134,6 +134,7 @@ export const useInventoryStore = defineStore('inventory', {
         const data = await response.json();
         
         this.displayeditems.push(data);
+        this.allItems.push(data);
       } catch (error) {
         console.error('Error adding item:', error);
       }
@@ -169,6 +170,9 @@ export const useInventoryStore = defineStore('inventory', {
         console.error('Error moving item:', error);
       }
     },
+
+
+
     async deleteItem(index) {
       if (!this.selectedContainer) {
         console.error('No selected container to delete item from.');
@@ -177,6 +181,8 @@ export const useInventoryStore = defineStore('inventory', {
 
 
       const itemId = this.displayeditems[index]._id;
+      const foundItem = this.allItems.find(x => x._id === itemId);
+      const itemIndexInAllItems = this.allItems.indexOf(foundItem);
       try {
         await fetch(
             apiUrl + `/items/item/${itemId}`,
@@ -185,6 +191,7 @@ export const useInventoryStore = defineStore('inventory', {
           }
         );
         this.displayeditems.splice(index, 1);
+        this.allItems.splice(itemIndexInAllItems,1);
       } catch (error) {
         console.error('Error deleting item:', error);
       }
@@ -219,6 +226,11 @@ export const useInventoryStore = defineStore('inventory', {
         );
         this.containers.splice(index, 1);
         this.selectContainer(null);
+
+
+        //backend replay when container got deleted needed (TODO)
+        this.allItems = [];
+        this.fetchAllItems();
       }
       catch (error) {
         console.error('Error deleting container:', error);
@@ -231,8 +243,7 @@ export const useInventoryStore = defineStore('inventory', {
             return;
           }
 
-      console.log(this.displayeditems[index]);
-
+    
       const itemId = this.displayeditems[index]._id;
       try {
         await fetch(
@@ -252,6 +263,12 @@ export const useInventoryStore = defineStore('inventory', {
         this.displayeditems[index].name = newName;
         this.displayeditems[index].qtty = newqtty;
         this.displayeditems[index].expiration_date = newexpiration_date;
+
+
+        const foundItem = this.allItems.find(x => x._id === itemId);
+        const itemIndexInAllItems = this.allItems.indexOf(foundItem);
+
+        this.allItems[itemIndexInAllItems].name = newName;s
       } catch (error) {
         console.error('Error updating item name:', error);
       }
