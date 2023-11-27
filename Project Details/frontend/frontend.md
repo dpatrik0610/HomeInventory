@@ -1,6 +1,7 @@
+
 # Home Inventory App Code Documentation
 
-In this document, we will provide code documentation for a Vue 3 application that manages a home inventory system. The application is built using Vue 3 and the Pinia state management library. Below, we will break down the code, explain its functionality, and provide visual diagrams using PlantUML and Mermaid where appropriate.
+In this document, we provide code documentation for a Vue 3 application that manages a home inventory system. The application is built using Vue 3 and the Pinia state management library. Below, we break down the code, explain its functionality, and provide visual diagrams using PlantUML and Mermaid where appropriate.
 
 ## Table of Contents
 
@@ -32,21 +33,16 @@ The Vue component `HomeInventory.vue` represents the main interface of the home 
 classDiagram
 class HomeInventory {
   + $store
-  + newNameInput
+  + selectedContainerIndex
   + editItemName(index)
-  + editContainer(index)
   + deleteItem(index)
-  + deleteContainer(index)
+  + moveToContainer(itemIndex, containerIndex)
   + addItem()
-  + selectContainer(index)
-  + addContainer()
 }
 
 ```
 
 1. **Component Structure Diagram:**
-
-   This diagram illustrates the structure of the Vue component `HomeInventory.vue` and its key elements.
 
    ```mermaid
    graph LR
@@ -61,28 +57,30 @@ class HomeInventory {
 
 2. **State Management Diagram:**
 
-   This diagram shows how the Pinia store manages the application's state, including containers and displayed items.
-
    ```mermaid
    classDiagram
    class useInventoryStore {
      + containers
      + displayeditems
+     + containersExcludedSecected
+     + allItems
      + selectedContainer
+     + fetchAllItems()
      + fetchContainers()
      + addContainer(name)
      + updateContainerName(index, newName)
      + selectContainer(index)
      + addItem(name)
+     + moveItem(itemIndex, containerIndex)
      + deleteItem(index)
+     + selectContainerById(containerId)
+     + fetchContainersExeptSelected()
      + deleteContainer(index)
      + updateItemName(index, newName, newqtty, newexpiration_date)
    }
    ```
 
 3. **API Integration Diagram:**
-
-   Illustrates how the application communicates with the API by sending HTTP requests to perform CRUD operations.
 
    ```mermaid
    graph TD
@@ -94,8 +92,6 @@ class HomeInventory {
 
 4. **Container Management Diagram:**
 
-   Shows the actions and state changes involved in container management.
-
    ```mermaid
    graph LR
      A[User] -->|Manage Containers| B[Home Inventory]
@@ -106,19 +102,16 @@ class HomeInventory {
 
 5. **Item Management Diagram:**
 
-   Illustrates the actions and state changes associated with item management within a selected container.
-
    ```mermaid
    graph LR
      A[User] -->|Manage Items| B[Home Inventory]
      B -->|Add Item| C[Pinia Store]
      B -->|Edit Item| C
      B -->|Delete Item| C
+     B -->|Move Item| C
    ```
 
 6. **Data Flow Diagram:**
-
-   Represents the flow of data between the components, the Pinia store, and the API.
 
    ```mermaid
    graph TD
@@ -127,189 +120,10 @@ class HomeInventory {
      C -->|Communicates with| D[API]
    ```
 
-These diagrams provide a comprehensive visual overview of the Home Inventory application, its components, state management, API integration, and data flow.
-
-7. **Container CRUD Sequence Diagram:**
-
-   This sequence diagram illustrates the interaction between a user and the Home Inventory application when performing CRUD operations on containers.
-
-   ```mermaid
-   sequenceDiagram
-     participant User
-     participant Home Inventory
-     participant Pinia Store
-     participant API
-
-     User->>Home Inventory: Manage Containers
-     Home Inventory->>Pinia Store: Request to Fetch Containers
-     Pinia Store->>API: Fetch Containers
-     API->>Pinia Store: Containers Data
-     Pinia Store-->>Home Inventory: Updated Containers
-     Home Inventory-->>User: Display Containers
-
-     User->>Home Inventory: Add Container
-     Home Inventory->>Pinia Store: Request to Add Container
-     Pinia Store->>API: Create Container
-     API->>Pinia Store: New Container Data
-     Pinia Store-->>Home Inventory: Updated Containers
-
-     User->>Home Inventory: Edit Container
-     Home Inventory->>Pinia Store: Request to Edit Container
-     Pinia Store->>API: Update Container
-     API->>Pinia Store: Updated Container Data
-     Pinia Store-->>Home Inventory: Updated Containers
-
-     User->>Home Inventory: Delete Container
-     Home Inventory->>Pinia Store: Request to Delete Container
-     Pinia Store->>API: Delete Container
-     API->>Pinia Store: Confirmation
-     Pinia Store-->>Home Inventory: Updated Containers
-   ```
-
-8. **Item CRUD Sequence Diagram:**
-
-   This sequence diagram illustrates the interaction between a user and the Home Inventory application when performing CRUD operations on items.
-
-   ```mermaid
-   sequenceDiagram
-     participant User
-     participant Home Inventory
-     participant Pinia Store
-     participant API
-
-     User->>Home Inventory: Manage Items
-     Home Inventory->>Pinia Store: Request to Fetch Items
-     Pinia Store->>API: Fetch Items
-     API->>Pinia Store: Items Data
-     Pinia Store-->>Home Inventory: Updated Items
-     Home Inventory-->>User: Display Items
-
-     User->>Home Inventory: Add Item
-     Home Inventory->>Pinia Store: Request to Add Item
-     Pinia Store->>API: Create Item
-     API->>Pinia Store: New Item Data
-     Pinia Store-->>Home Inventory: Updated Items
-
-     User->>Home Inventory: Edit Item
-     Home Inventory->>Pinia Store: Request to Edit Item
-     Pinia Store->>API: Update Item
-     API->>Pinia Store: Updated Item Data
-     Pinia Store-->>Home Inventory: Updated Items
-
-     User->>Home Inventory: Delete Item
-     Home Inventory->>Pinia Store: Request to Delete Item
-     Pinia Store->>API: Delete Item
-     API->>Pinia Store: Confirmation
-     Pinia Store-->>Home Inventory: Updated Items
-   ```
-
-
-9. **Data Synchronization Sequence Diagram:**
-
-    This sequence diagram illustrates how the application synchronizes data with the API to maintain consistency.
-
-    ```mermaid
-    sequenceDiagram
-      participant API
-      participant Pinia Store
-      participant Home Inventory
-
-      API->>Pinia Store: Send Data Changes (e.g., Container Update)
-      Pinia Store->>API: Update Data (e.g., Container Update Confirmation)
-
-      API->>Pinia Store: Send Data Changes (e.g., Item Update)
-      Pinia Store->>API: Update Data (e.g., Item Update Confirmation)
-
-      Home Inventory->>Pinia Store: Request Data (e.g., Fetch Containers)
-      Pinia Store->>API: Retrieve Data (e.g., Fetch Containers Data)
-      API-->>Pinia Store: Data Response
-      Pinia Store-->>Home Inventory: Updated Data
-    ```
-
-These additional diagrams provide a more detailed view of specific aspects of the Home Inventory application, including CRUD operations on containers and items, container selection, and data synchronization with the API.
-
-
-
-10. **Select Container Sequence Diagram:**
-
-   This diagram illustrates how a user selects a container, and the application updates the selected container and fetches the items within it.
-
-   ```mermaid
-   sequenceDiagram
-     participant User
-     participant Home Inventory
-     participant Pinia Store
-     participant API
-
-     User->>Home Inventory: Select Container
-     Home Inventory->>Pinia Store: Request to Select Container
-     Pinia Store->>API: Fetch Items for Container
-     API->>Pinia Store: Items Data
-     Pinia Store-->>Home Inventory: Updated Items
-   ```
-
-11. **Display Items Sequence Diagram:**
-
-   This diagram shows how the application retrieves and displays items within the selected container after a user selects a container.
-
-   ```mermaid
-   sequenceDiagram
-     participant User
-     participant Home Inventory
-     participant Pinia Store
-     participant API
-
-     User->>Home Inventory: Select Container
-     Home Inventory->>Pinia Store: Request to Select Container
-     Pinia Store->>API: Fetch Items for Container
-     API->>Pinia Store: Items Data
-     Pinia Store-->>Home Inventory: Updated Items
-     Home Inventory-->>User: Display Items
-   ```
-
-12. **Item Management within Selected Container Sequence Diagram:**
-
-   This diagram illustrates the interaction between the user, the application, and the Pinia store when managing items within the selected container.
-
-   ```mermaid
-   sequenceDiagram
-     participant User
-     participant Home Inventory
-     participant Pinia Store
-     participant API
-
-     User->>Home Inventory: Manage Items
-     Home Inventory->>Pinia Store: Request to Fetch Items
-     Pinia Store->>API: Fetch Items
-     API->>Pinia Store: Items Data
-     Pinia Store-->>Home Inventory: Updated Items
-     Home Inventory-->>User: Display Items
-
-     User->>Home Inventory: Add Item
-     Home Inventory->>Pinia Store: Request to Add Item
-     Pinia Store->>API: Create Item
-     API->>Pinia Store: New Item Data
-     Pinia Store-->>Home Inventory: Updated Items
-
-     User->>Home Inventory: Edit Item
-     Home Inventory->>Pinia Store: Request to Edit Item
-     Pinia Store->>API: Update Item
-     API->>Pinia Store: Updated Item Data
-     Pinia Store-->>Home Inventory: Updated Items
-
-     User->>Home Inventory: Delete Item
-     Home Inventory->>Pinia Store: Request to Delete Item
-     Pinia Store->>API: Delete Item
-     API->>Pinia Store: Confirmation
-     Pinia Store-->>Home Inventory: Updated Items
-   ```
-
-These diagrams provide a detailed view of the interactions related to the selected container in the Home Inventory application, including how it is selected, how items within it are displayed, and how item management operations are performed within the selected container.
-
 ### Component Structure
 
 1. The component includes a sidebar on the left that displays a list of containers and provides options to edit and delete containers.
-2. It has a main content area on the right that displays items within the selected container and provides options to edit and delete items.
+2. It has a main content area on the right that displays items within the selected container and provides options to edit, delete, and move items.
 3. Users can add new containers and new items using the respective buttons.
 
 ## Pinia Store
@@ -324,12 +138,9 @@ The Pinia store, defined in `src/store/index.js`, manages the application's stat
 classDiagram
 class HomeInventory {
   + $store
-  + newNameInput
-  + editItemName(index)
+  + selectedContainerIndex
   + editContainer(index)
-  + deleteItem(index)
   + deleteContainer(index)
-  + addItem()
   + selectContainer(index)
   + addContainer()
 }
@@ -337,59 +148,235 @@ class HomeInventory {
 class useInventoryStore {
   + containers
   + displayeditems
+  + containersEx
+
+cludedSecected
+  + allItems
   + selectedContainer
+  + fetchAllItems()
   + fetchContainers()
   + addContainer(name)
   + updateContainerName(index, newName)
   + selectContainer(index)
   + addItem(name)
+  + moveItem(itemIndex, containerIndex)
   + deleteItem(index)
+  + selectContainerById(containerId)
+  + fetchContainersExeptSelected()
   + deleteContainer(index)
   + updateItemName(index, newName, newqtty, newexpiration_date)
 }
+```
+### Store Methods
 
+1. `fetchAllItems`: Fetches all items from the API.
+2. `fetchContainers`: Fetches all containers from the API.
+3. `addContainer(name)`: Adds a new container to the store and the API.
+4. `updateContainerName(index, newName)`: Updates the name of a container.
+5. `selectContainer(index)`: Selects a container and fetches its items.
+6. `addItem(name)`: Adds a new item to the selected container.
+7. `moveItem(itemIndex, containerIndex)`: Moves an item to another container.
+8. `deleteItem(index)`: Deletes an item from the selected container.
+9. `selectContainerById(containerId)`: Selects a container by its ID.
+10. `fetchContainersExeptSelected()`: Fetches containers excluding the currently selected one.
+11. `deleteContainer(index)`: Deletes a container from the store and the API.
+12. `updateItemName(index, newName, newqtty, newexpiration_date)`: Updates the name/quantity/experation date of an item.
+
+
+### `fetchAllItems` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: fetchAllItems()
+  S ->> A: Fetch items from API
+  A -->> S: Items data
+  S -->> U: Updated allItems
 ```
 
-### Store Structure
+### `fetchContainers` Method Diagram:
 
-1. **State Properties:**
-   - `containers`: An array of container objects.
-   - `displayeditems`: An array of displayed items in the selected container.
-   - `selectedContainer`: The currently selected container.
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
 
-2. **Actions:**
-   - `fetchContainers()`: Fetches containers from the API and updates the `containers` state.
-   - `addContainer(name)`: Adds a new container to the API and updates the `containers` state.
-   - `updateContainerName(index, newName)`: Updates the name of a container in the API and updates the `containers` state.
-   - `selectContainer(index)`: Selects a container and fetches its items from the API, updating the `selectedContainer` and `displayeditems` state.
-   - `addItem(name)`: Adds a new item to the selected container in the API and updates the `displayeditems` state.
-   - `deleteItem(index)`: Deletes an item from the selected container in the API and updates the `displayeditems` state.
-   - `deleteContainer(index)`: Deletes a container from the API and updates the `containers` and `selectedContainer` states.
-   - `updateItemName(index, newName, newqtty, newexpiration_date)`: Updates the name, quantity, and expiration date of an item in the API and updates the `displayeditems` state.
+  U ->> S: fetchContainers()
+  S ->> A: Fetch containers from API
+  A -->> S: Containers data
+  S -->> U: Updated containers
+```
+
+### `addContainer` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: addContainer(name)
+  S ->> A: Add container to API
+  A -->> S: New container data
+  S -->> U: Updated containers
+```
+
+### `updateContainerName` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: updateContainerName(index, newName)
+  S ->> A: Update container name in API
+  A -->> S: Updated container data
+  S -->> U: Updated containers
+```
+
+### `selectContainer` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: selectContainer(index)
+  S ->> A: Fetch items for selected container from API
+  A -->> S: Items data for selected container
+  S -->> U: Updated selectedContainer and displayeditems
+```
+
+### `addItem` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: addItem(name)
+  S ->> A: Add item to selected container in API
+  A -->> S: New item data
+  S -->> U: Updated displayeditems and allItems
+```
+
+### `moveItem` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: moveItem(itemIndex, containerIndex)
+  S ->> A: Move item to another container in API
+  A -->> S: Success response
+  S -->> U: Updated displayeditems
+```
+
+### `deleteItem` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: deleteItem(index)
+  S ->> A: Delete item from selected container in API
+  A -->> S: Success response
+  S -->> U: Updated displayeditems and allItems
+```
+
+### `selectContainerById` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: selectContainerById(containerId)
+  S ->> A: Fetch items for selected container from API
+  A -->> S: Items data for selected container
+  S -->> U: Updated selectedContainer and displayeditems
+```
+
+### `fetchContainersExeptSelected` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+
+  U ->> S: fetchContainersExeptSelected()
+  S -->> U: Updated containersExcludedSecected
+```
+
+### `deleteContainer` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: deleteContainer(index)
+  S ->> A: Delete container from API
+  A -->> S: Success response
+  S -->> U: Updated containers and selectedContainer
+```
+
+### `updateItemName` Method Diagram:
+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant S as useInventoryStore
+  participant A as API
+
+  U ->> S: updateItemName(index, newName, newqtty, newexpiration_date)
+  S ->> A: Update item name/quantity/experation date in API
+  A -->> S: Success response
+  S -->> U: Updated displayeditems and allItems
+```
 
 ## API Integration
 
-The application interacts with an API to perform CRUD operations on containers and items. The API endpoints are constructed based on the actions defined in the Pinia store.
+### API Overview
+
+The application interacts with a backend API to perform CRUD operations on containers and items. The API is responsible for managing the database and responding to requests from the front end.
 
 ### API Endpoints
 
-- `GET /containers`: Fetches the list of containers.
-- `POST /containers`: Adds a new container.
-- `PUT /containers/{containerId}`: Updates the name of a container.
-- `GET /items/{containerId}`: Fetches items within a container.
-- `POST /items`: Adds a new item to a container.
-- `DELETE /items/item/{itemId}`: Deletes an item.
-- `DELETE /containers/{containerId}`: Deletes a container.
+1. `/containers`: GET, POST
+2. `/containers/:id`: PUT, DELETE
+3. `/containers/moveItem`: POST
+4. `/items`: GET, POST
+5. `/items/:containerId`: GET
+6. `/items/item/:id`: PUT, DELETE
+7. `/containers/search/:itemId`: GET
 
 ## Functionality Overview
 
-The application provides the following functionality:
+### Application Functionality
 
-- Listing and managing containers, including editing and deleting containers.
-- Selecting a container to view and manage the items it contains.
-- Listing and managing items within the selected container, including editing and deleting items.
-- Adding new containers and new items.
+1. Users can manage containers, including adding, editing, and deleting them.
+2. Users can select a container and view, add, edit, move, and delete items within that container.
+3. The application enforces limits on the number of containers and items.
 
-The application fetches and updates data from the API to keep the state synchronized with the server. Users can interact with the UI to perform various operations on containers and items.
+### Application Limitations
 
-By using Vue 3 and the Pinia store, the application offers a responsive and efficient user experience for managing a home inventory.
+1. Container limit: 15 containers.
+2. Item limit per container: 20 items.
+
+## Conclusion
+
+This documentation provides an overview of the structure and functionality of the home inventory application. Developers can refer to this documentation to understand how different components interact and how to use the Pinia store for state management.
