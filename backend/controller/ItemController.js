@@ -58,7 +58,8 @@ class ItemController {
   async updateItem(req, res) {
     const { id } = req.params;
     const { name, qtty, expiration_date } = req.body;
-    
+    if(!id) return res.status(400).json({message: "Please provide an item ID."})
+
     const updatedItemData = {
       name,
       qtty,
@@ -80,6 +81,7 @@ class ItemController {
 
   async deleteItem(req, res) {
     const { id } = req.params;
+    if(!id) return res.status(400).json({message: "Please provide an ID."})
 
     try {
       const isDeleted = await this.itemService.deleteItem(id);
