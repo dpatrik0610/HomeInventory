@@ -9,6 +9,9 @@ class ItemController {
   async createItem(req, res) {
     try {
       const { containerId, name, qtty, expiration_date = null } = req.body;
+      const itemCount = await this.itemService.getItemCountByContainerId(containerId);
+      if(itemCount >= 20) return res.status(400).json({message: "Container is full."});
+      
       if(!containerId || containerId === undefined) return res.status(400).json({message: "Container ID required."});
       if(!name) return res.status(400).json({message: "Name required."});
 
