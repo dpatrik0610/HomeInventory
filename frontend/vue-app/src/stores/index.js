@@ -8,6 +8,7 @@ export const useInventoryStore = defineStore('inventory', {
   state: () => ({
     containers: [],
     displayeditems: [],
+    containersExcludedSecected: [],
     allItems: [],
     selectedContainer: null,
   }),
@@ -95,6 +96,7 @@ export const useInventoryStore = defineStore('inventory', {
     }
       this.selectedContainer = this.containers[index];
       const id = this.selectedContainer._id;
+      this.fetchContainersExeptSelected();
       
       try {
         const response = await fetch(apiUrl + `/items/${id}`);
@@ -111,7 +113,6 @@ export const useInventoryStore = defineStore('inventory', {
             console.error('No selected container to add item to.');
             return;
           }
-        
           if (!Array.isArray(this.selectedContainer.items)) {
             this.selectedContainer.items = []; // Initialize it as an empty array if it's undefined
           }
@@ -136,20 +137,20 @@ export const useInventoryStore = defineStore('inventory', {
         this.displayeditems.push(data);
         this.allItems.push(data);
       } catch (error) {
-        console.error('Error adding item:', error);
+        alert('Error adding item:', error);
       }
     },
 
     async moveItem(itemindex, containerindex) {
       if (!this.selectedContainer) {
-        console.error('No selected container to move item to.');
+        alert('No selected container to move item to.');
         return;
       }
       
       try{
        
           const itemId = this.displayeditems[itemindex]._id;
-          const containerId = this.containers[containerindex]._id;
+          const containerId = this.containersExcludedSecected[containerindex]._id;
 
            await fetch(
             apiUrl + `/containers/moveItem`,{
@@ -167,7 +168,7 @@ export const useInventoryStore = defineStore('inventory', {
 
       }
       catch (error) {
-        console.error('Error moving item:', error);
+        alert('Error moving item:', error);
       }
     },
 
@@ -193,7 +194,7 @@ export const useInventoryStore = defineStore('inventory', {
         this.displayeditems.splice(index, 1);
         this.allItems.splice(itemIndexInAllItems,1);
       } catch (error) {
-        console.error('Error deleting item:', error);
+        alert('Error deleting item:', error);
       }
     },
 
@@ -209,10 +210,22 @@ export const useInventoryStore = defineStore('inventory', {
       if (foundContainerIndex !== -1) {
         this.selectContainer(foundContainerIndex);
       } else {
+        alert('Container not found.');
         console.error('Container with ID', containerId, 'not found.');
       }
     },
 
+    fetchContainersExeptSelected() {
+      this.containersExcludedSecected = this.containers;
+
+      if (this.selectedContainer) {
+        this.containersExcludedSecected = this.containersExcludedSecected.filter(
+          (container) => container._id !== this.selectedContainer._id
+        );
+      }
+    },
+
+  
 
     async deleteContainer(index) {
       
@@ -233,12 +246,14 @@ export const useInventoryStore = defineStore('inventory', {
         this.fetchAllItems();
       }
       catch (error) {
+        alert('Error deleting container:', error);
         console.error('Error deleting container:', error);
       }
     },
 
     async updateItemName(index, newName, newqtty, newexpiration_date) {
         if (!this.selectedContainer) {
+            alert('No selected container to delete item from.');
             console.error('No selected container to delete item from.');
             return;
           }
@@ -270,6 +285,7 @@ export const useInventoryStore = defineStore('inventory', {
 
         this.allItems[itemIndexInAllItems].name = newName;s
       } catch (error) {
+        alert('Error updating item name:', error);
         console.error('Error updating item name:', error);
       }
     },

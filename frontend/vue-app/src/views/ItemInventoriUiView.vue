@@ -1,36 +1,51 @@
 <template>
+  <div class="w-full mr-3 p-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded" style="max-height: 100vh;">
+    <div v-if="$store.selectedContainer">
+      <div class="grid gap-4 grid-cols-2 w-full text-3xl">
+        <h2 class="font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
+        <div
+          role="button"
+          tabindex="0"
+          class=" text-right mt-1 mr-3"
+          @click="addItem"
+        >
+          <i class="text-2xl fa-solid fa-circle-plus text-green-500"></i>
+        </div>
+      </div>
 
-    <div class="w-full mr-3 p-4 overflow-auto scrollbar-thin scrollbar-thumb-rounded" style="max-height: 100vh;">
-    <div v-if="$store.selectedContainer" >
-      <h2 class="text-2xl font-bold mb-3">{{ $store.selectedContainer.name }}</h2>
       <ul>
         <li v-for="(item, index) in $store.displayeditems" :key="index">
           <div
-            class="flex overflow-auto justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none m-1"
+            class="flex overflow-auto justify-between items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-blue-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none"
           >
             <span>
-              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80 mr-3">&nbsp;{{ item.qtty }}x&nbsp;</span>{{ item.name }}
+              <span class="p-1 border border-white rounded-lg hover:bg-blue-900 hover-bg-opacity-80 mr-3">
+                &nbsp;{{ item.qtty }}x&nbsp;
+              </span>
+              {{ item.name }}
               <!-- Conditionally render expiration date -->
               <template v-if="item.expiration_date">
                 &nbsp;( Expires at: {{ item.expiration_date }} )
               </template>
             </span>
             <div class="flex">
-              <button class="text-blue-500 mr-2" @click="toggleDropdown(index)">
-                <i class="fa-solid fa-arrow-right-arrow-left"></i>
-                <div v-if="item.showDropdown">
-                  <ul class="absolute mt-2 py-2 bg-gray-900 hover:text-gray border border-gray-200 rounded-lg shadow-lg">
-                    <li v-for="(container, cIndex) in $store.containers" :key="cIndex">
-                      <div v-if="container !== $store.selectedContainer" class="cursor-pointer p-2 hover:bg-blue-500 hover:text-white m-1 rounded-lg" @click="moveToContainer(index, cIndex)">
-                        {{ container.name }}
-                      </div>
-                    </li>
-                    <button class="cursor-pointer p-2 hover:bg-red-500 hover:text-white m-1 rounded-lg">
-                      Cancel
-                    </button>
-                  </ul>
-                </div>
-              </button>
+
+              <div>
+                <i class="fa-solid fa-arrow-right-arrow-left text-blue-600 mr-3 "></i>
+              </div>
+              <select class="mr-2 rounded bg-slate-600 opacity-80" v-model="selectedContainerIndex" @change="moveToContainer(index)">
+                <option class="text-blue-200 rounded-lg" :value="null" disabled selected>
+                  Move To Container
+                </option>
+                <option class="text-blue-400 bg-slate-800 rounded-lg opacity-20" v-for="(container, cIndex) in $store.containersExcludedSecected" :key="cIndex" :value="cIndex">
+                  {{ container.name }}
+                </option>
+              </select>
+
+
+
+
+
               <button class="text-yellow-500 mr-2" @click="editItemName(index)">
                 <i class="fa-solid fa-pen-to-square"></i>
               </button>
@@ -41,33 +56,28 @@
           </div>
         </li>
       </ul>
-      <div
-        role="button"
-        tabindex="0"
-        class="flex items-center w-full p-3 rounded-lg text-start leading-tight transition-all hover:bg-green-900 hover-bg-opacity-80 focus-bg-opacity-80 active-bg-opacity-80 focus-text-blue-900 active-text-blue-900 outline-none border border-green-500 hover:bg-opacity-40"
-        @click="addItem"
-      >
-        + Add Item
+      <div class=" justify-items-center ">
+        <p><small> Container limit : {{$store.displayeditems.length}}/{{20}}</small></p>
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
-import { reactive, toRefs } from 'vue'
+import { reactive, toRefs} from 'vue'
 import { useInventoryStore } from '../stores/index';
 import { ref } from 'vue';
 
 export default {
+  
     setup () {
 
     const $store = useInventoryStore();
 
 
         const state = reactive({
-            count: 0,
-        })
+          selectedContainerIndex: null,
+        });
 
         const editItemName = (index) => {
 
@@ -81,6 +91,7 @@ export default {
             if (newName === null) 
             {
             $store.displayeditems[index].name = originalname;
+            alert('Invalid name');
             throw new Error('Invalid name');
             }
 
@@ -89,6 +100,7 @@ export default {
 
             if (isNaN(newqtty) || newqtty <= 0) {
                 $store.displayeditems[index].qtty = originalqtty;
+                alert('Invalid quantity. Please enter a valid number greater than 0.');
                 throw new Error('Invalid quantity. Please enter a valid number greater than 0.');
             }
 
@@ -97,6 +109,7 @@ export default {
             if (newexpirationDate === null) 
             {
             $store.displayeditems[index].expiration_date = originalexpirationDate;
+            alert('Invalid expiration date');
             throw new Error('Invalid expiration date');
             }
 
@@ -104,37 +117,54 @@ export default {
             if (newexpirationDate === "null") 
             {
             $store.displayeditems[index].expiration_date = originalexpirationDate;
+            alert('Invalid expiration date');
             throw new Error('Invalid expiration date');
             }
 
             if (newName) {
             $store.updateItemName(index, newName, newqtty, newexpirationDate);
             }
+
+
+            alert('Item updated successfully');
             };
 
-            const toggleDropdown = (index) => {
-            $store.displayeditems[index].showDropdown = !$store.displayeditems[index].showDropdown;
-            };
+            
 
 
 
             const deleteItem = (index) => {
             $store.deleteItem(index);
+
+            alert('Item deleted successfully');
             };
 
 
 
 
-            const moveToContainer = (itemIndex, containerindex) => {
-            $store.moveItem(itemIndex, containerindex);
-            };
+            const moveToContainer = (itemIndex) => {
+              const containerIndex = state.selectedContainerIndex;
+              if (containerIndex !== null) {
+                $store.moveItem(itemIndex, containerIndex);
+                // Reset selectedContainerIndex after moving item
+                state.selectedContainerIndex = null;
+              }
 
+              alert('Item moved to container successfully');
+            };
 
             const addItem = () => {
+              if($store.displayeditems.length >= 20)
+              {
+                alert('Item limit reached');
+                return;
+              }
             const name = prompt('Enter the name for the new item');
             if (name) {
             $store.addItem(name);
             }
+
+            alert('Item added successfully');
             };
 
     
@@ -146,7 +176,6 @@ export default {
             deleteItem,
             addItem,
             moveToContainer,
-            toggleDropdown,
         }
     }
 }
