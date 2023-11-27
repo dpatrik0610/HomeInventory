@@ -8,6 +8,7 @@ export const useInventoryStore = defineStore('inventory', {
   state: () => ({
     containers: [],
     displayeditems: [],
+    containersExcludedSecected: [],
     allItems: [],
     selectedContainer: null,
   }),
@@ -95,6 +96,7 @@ export const useInventoryStore = defineStore('inventory', {
     }
       this.selectedContainer = this.containers[index];
       const id = this.selectedContainer._id;
+      this.fetchContainersExeptSelected();
       
       try {
         const response = await fetch(apiUrl + `/items/${id}`);
@@ -148,7 +150,7 @@ export const useInventoryStore = defineStore('inventory', {
       try{
        
           const itemId = this.displayeditems[itemindex]._id;
-          const containerId = this.containers[containerindex]._id;
+          const containerId = this.containersExcludedSecected[containerindex]._id;
 
            await fetch(
             apiUrl + `/containers/moveItem`,{
@@ -213,6 +215,17 @@ export const useInventoryStore = defineStore('inventory', {
       }
     },
 
+    fetchContainersExeptSelected() {
+      this.containersExcludedSecected = this.containers;
+
+      if (this.selectedContainer) {
+        this.containersExcludedSecected = this.containersExcludedSecected.filter(
+          (container) => container._id !== this.selectedContainer._id
+        );
+      }
+    },
+
+  
 
     async deleteContainer(index) {
       
