@@ -33,7 +33,7 @@
               <div>
                 <i class="fa-solid fa-arrow-right-arrow-left text-blue-600 mr-3 "></i>
               </div>
-              <select class="mr-2 rounded bg-slate-600 opacity-80" v-model="selectedContainerIndex" @change="moveToContainer(index)">
+              <select class="mr-2 rounded bg-slate-600 opacity-40  transition-all hover:opacity-100" v-model="selectedContainerIndex" @change="moveToContainer(index)">
                 <option class="text-blue-200 rounded-lg" :value="null" disabled selected>
                   Move To Container
                 </option>
