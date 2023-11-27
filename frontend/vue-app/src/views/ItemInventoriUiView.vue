@@ -137,6 +137,11 @@ export default {
 
 
             const addItem = () => {
+              if($store.displayeditems.length >= 20)
+              {
+                alert('Item limit reached');
+                return;
+              }
             const name = prompt('Enter the name for the new item');
             if (name) {
             $store.addItem(name);

@@ -111,7 +111,6 @@ export const useInventoryStore = defineStore('inventory', {
             console.error('No selected container to add item to.');
             return;
           }
-        
           if (!Array.isArray(this.selectedContainer.items)) {
             this.selectedContainer.items = []; // Initialize it as an empty array if it's undefined
           }
