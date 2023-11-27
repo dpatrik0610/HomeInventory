@@ -87,6 +87,7 @@ export default {
             if (newName === null) 
             {
             $store.displayeditems[index].name = originalname;
+            alert('Invalid name');
             throw new Error('Invalid name');
             }
 
@@ -95,6 +96,7 @@ export default {
 
             if (isNaN(newqtty) || newqtty <= 0) {
                 $store.displayeditems[index].qtty = originalqtty;
+                alert('Invalid quantity. Please enter a valid number greater than 0.');
                 throw new Error('Invalid quantity. Please enter a valid number greater than 0.');
             }
 
@@ -103,6 +105,7 @@ export default {
             if (newexpirationDate === null) 
             {
             $store.displayeditems[index].expiration_date = originalexpirationDate;
+            alert('Invalid expiration date');
             throw new Error('Invalid expiration date');
             }
 
@@ -110,6 +113,7 @@ export default {
             if (newexpirationDate === "null") 
             {
             $store.displayeditems[index].expiration_date = originalexpirationDate;
+            alert('Invalid expiration date');
             throw new Error('Invalid expiration date');
             }
 
